@@ -7,20 +7,31 @@ import type { Objetivo } from '../types'
 const DESAFIOS = [7, 21, 40, 90, 180, 365]
 const TOTAL = 6
 
-function Topo({ passo, onVoltar }: { passo: number; onVoltar: () => void }) {
+function Wrap({
+  passo,
+  onVoltar,
+  children,
+}: {
+  passo: number
+  onVoltar: () => void
+  children: ReactNode
+}) {
   return (
-    <div className="flex items-center gap-3 mb-8">
-      <button onClick={onVoltar} className="text-cinza/70">
-        <Icon name="back" size={22} />
-      </button>
-      <div className="flex flex-1 gap-1.5">
-        {Array.from({ length: TOTAL }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-all ${i <= passo ? 'bg-dourado' : 'bg-white/10'}`}
-          />
-        ))}
+    <div className="min-h-screen px-6 pt-10 pb-10 max-w-md mx-auto flex flex-col">
+      <div className="flex items-center gap-3 mb-8">
+        <button onClick={onVoltar} className="text-cinza/70">
+          <Icon name="back" size={22} />
+        </button>
+        <div className="flex flex-1 gap-1.5">
+          {Array.from({ length: TOTAL }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 flex-1 rounded-full transition-all ${i <= passo ? 'bg-dourado' : 'bg-white/10'}`}
+            />
+          ))}
+        </div>
       </div>
+      <div className="flex-1 flex flex-col justify-center">{children}</div>
     </div>
   )
 }
@@ -38,12 +49,15 @@ function Btn({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="mt-8 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition disabled:opacity-30 disabled:shadow-none"
+      className="mt-8 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-cinza/40 disabled:shadow-none"
     >
       {children}
     </button>
   )
 }
+
+const input =
+  'mt-2 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-dourado'
 
 export function NovaBatalha({
   onPronto,
@@ -66,8 +80,6 @@ export function NovaBatalha({
 
   const vicioFinal = vicio === 'Outro' ? vicioOutro.trim() : vicio
   const voltar = () => (passo === 0 ? onCancelar() : setPasso((p) => p - 1))
-  const input =
-    'mt-2 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-dourado'
 
   const addObj = () => {
     if (!novoObj.trim()) return
@@ -88,16 +100,9 @@ export function NovaBatalha({
     onPronto(id)
   }
 
-  const Wrap = ({ children }: { children: ReactNode }) => (
-    <div className="min-h-screen px-6 pt-10 pb-10 max-w-md mx-auto flex flex-col animate-fadeUp">
-      <Topo passo={passo} onVoltar={voltar} />
-      <div className="flex-1 flex flex-col justify-center" key={passo}>{children}</div>
-    </div>
-  )
-
   if (passo === 0)
     return (
-      <Wrap>
+      <Wrap passo={0} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Qual batalha você vai vencer?</h2>
         <div className="mt-4 grid gap-2">
           {[...VICIOS, 'Outro'].map((v) => (
@@ -126,7 +131,7 @@ export function NovaBatalha({
 
   if (passo === 1)
     return (
-      <Wrap>
+      <Wrap passo={1} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Escolha o seu desafio</h2>
         <p className="mt-1 text-cinza/70 text-sm">Quantos dias você quer mirar primeiro?</p>
         <div className="mt-4 grid grid-cols-3 gap-2">
@@ -149,7 +154,7 @@ export function NovaBatalha({
 
   if (passo === 2)
     return (
-      <Wrap>
+      <Wrap passo={2} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Declaração de Liberdade</h2>
         <p className="mt-2 text-cinza/70">Complete a frase. Você vai reler isto nos momentos difíceis.</p>
         <p className="mt-4 text-dourado font-title">Estou iniciando meu Êxodo porque...</p>
@@ -160,7 +165,7 @@ export function NovaBatalha({
 
   if (passo === 3)
     return (
-      <Wrap>
+      <Wrap passo={3} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Seus motivos</h2>
         <p className="mt-2 text-cinza/70">O que você quer proteger? Família, sonhos, propósito...</p>
         <textarea value={motivos} onChange={(e) => setMotivos(e.target.value)} rows={4} className={input} placeholder="Pelas pessoas e sonhos que me esperam na Terra Prometida..." />
@@ -170,7 +175,7 @@ export function NovaBatalha({
 
   if (passo === 4)
     return (
-      <Wrap>
+      <Wrap passo={4} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Seu plano de ação</h2>
         <p className="mt-2 text-cinza/70">Defina objetivos concretos que vão te ajudar a vencer (opcional).</p>
         <div className="mt-4 flex gap-2">
@@ -202,7 +207,7 @@ export function NovaBatalha({
 
   // pacto de compromisso
   return (
-    <Wrap>
+    <Wrap passo={5} onVoltar={voltar}>
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-dourado/40 bg-dourado/10 text-dourado">
           <Icon name="shield" size={28} />

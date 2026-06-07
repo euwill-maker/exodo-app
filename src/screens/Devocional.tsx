@@ -3,6 +3,15 @@ import { useApp } from '../state/AppContext'
 import { TEMAS_DEVOCIONAIS } from '../content/devocionais'
 import { Icon, type IconName } from '../components/Icon'
 
+function Secao({ titulo, texto }: { titulo: string; texto: string }) {
+  return (
+    <div>
+      <h3 className="font-title text-dourado text-sm uppercase tracking-wide">{titulo}</h3>
+      <p className="text-cinza/90 mt-1 leading-relaxed">{texto}</p>
+    </div>
+  )
+}
+
 export function Devocional() {
   const { estado, concluirDevocional, salvarReflexao } = useApp()
   const [temaId, setTemaId] = useState<string | null>(null)
@@ -63,13 +72,6 @@ export function Devocional() {
   const chave = `${tema.id}:${indice}`
   const feito = concluidos.includes(chave)
   const reflexaoSalva = estado.devocional.reflexoes.find((r) => r.chave === chave)?.texto ?? ''
-
-  const Secao = ({ titulo, texto }: { titulo: string; texto: string }) => (
-    <div>
-      <h3 className="font-title text-dourado text-sm uppercase tracking-wide">{titulo}</h3>
-      <p className="text-cinza/90 mt-1 leading-relaxed">{texto}</p>
-    </div>
-  )
 
   return (
     <div className="px-5 pt-6 pb-28 max-w-md mx-auto space-y-5 animate-fadeUp" key={chave}>

@@ -26,7 +26,7 @@ export function Boasvindas() {
       <button
         onClick={() => definirNome(nome.trim())}
         disabled={!nome.trim()}
-        className="mt-8 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition disabled:opacity-30 disabled:shadow-none"
+        className="mt-8 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-cinza/40 disabled:shadow-none"
       >
         Começar
       </button>
