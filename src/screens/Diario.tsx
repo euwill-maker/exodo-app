@@ -21,10 +21,13 @@ export function Diario() {
     'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-dourado'
 
   return (
-    <div className="px-6 pt-8 pb-28 max-w-md mx-auto space-y-4">
-      <h2 className="font-title text-2xl">Diário Espiritual</h2>
+    <div className="px-5 pt-8 pb-28 max-w-md mx-auto space-y-5 animate-fadeUp">
       <div>
-        <p className="text-cinza text-sm mb-2">Hoje me senti:</p>
+        <p className="text-cinza/60 text-xs uppercase tracking-[0.2em]">Diário Espiritual</p>
+        <h2 className="font-title text-2xl mt-1">Como foi seu dia?</h2>
+      </div>
+      <div>
+        <p className="text-cinza/80 text-sm mb-2">Hoje me senti:</p>
         <Mood valor={humor} onMudar={setHumor} />
       </div>
       <textarea
@@ -50,24 +53,24 @@ export function Diario() {
       />
       <button
         onClick={salvar}
-        className="w-full rounded-xl bg-dourado py-3 font-title font-bold text-azul"
+        className="w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition"
       >
-        {salvo ? 'Salvo ✓' : 'Salvar'}
+        {salvo ? '✓ Salvo' : 'Salvar no diário'}
       </button>
       {estado.diario.length > 0 && (
-        <div className="pt-4">
-          <h3 className="font-title text-dourado mb-2">Histórico</h3>
+        <div className="pt-2">
+          <h3 className="font-title text-dourado text-sm uppercase tracking-wide mb-3">Histórico</h3>
           <div className="space-y-2">
             {estado.diario.map((d) => (
               <div
                 key={d.data}
-                className="rounded-xl bg-white/5 border border-white/10 p-3 text-sm"
+                className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm"
               >
                 <div className="flex justify-between">
                   <span className="text-dourado">{d.data}</span>
-                  <span className="text-cinza">{d.humor}</span>
+                  <span className="text-cinza/70">{d.humor}</span>
                 </div>
-                {d.oQueAconteceu && <p className="text-cinza mt-1">{d.oQueAconteceu}</p>}
+                {d.oQueAconteceu && <p className="text-cinza/80 mt-1">{d.oQueAconteceu}</p>}
               </div>
             ))}
           </div>

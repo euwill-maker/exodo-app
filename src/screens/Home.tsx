@@ -1,5 +1,6 @@
 import { JourneyBar } from '../components/JourneyBar'
 import { ProgressRing } from '../components/ProgressRing'
+import { Icon, type IconName } from '../components/Icon'
 import { useApp } from '../state/AppContext'
 import { partesTempo, diasLivres } from '../lib/streak'
 import { faseAtual } from '../lib/journey'
@@ -55,9 +56,9 @@ export function Home({ onSOS }: { onSOS: () => void }) {
 
       {/* fase atual */}
       <div className="text-center -mt-2">
-        <div className="inline-flex items-center gap-2 rounded-full border border-dourado/30 bg-white/5 px-4 py-1.5">
-          <span className="text-base">{fase.icone}</span>
-          <span className="font-title text-dourado font-semibold">{fase.nome}</span>
+        <div className="inline-flex items-center gap-2 rounded-full border border-dourado/30 bg-white/5 px-4 py-1.5 text-dourado">
+          <Icon name={fase.icone as IconName} size={18} />
+          <span className="font-title font-semibold">{fase.nome}</span>
         </div>
         <p className="text-cinza/80 text-sm mt-2 px-4">{fase.mensagem}</p>
       </div>
@@ -78,8 +79,8 @@ export function Home({ onSOS }: { onSOS: () => void }) {
 
       {/* versículo do dia (vidro) */}
       <div className="relative rounded-3xl border border-dourado/20 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-5 text-center shadow-glow-sm backdrop-blur">
-        <span className="absolute -top-3 left-5 font-title text-5xl text-dourado/40 leading-none">“</span>
-        <p className="italic text-white/95 leading-relaxed">{v.texto}</p>
+        <span className="absolute -top-4 left-5 font-scripture text-6xl text-dourado/40 leading-none">“</span>
+        <p className="font-scripture text-2xl italic text-white/95 leading-snug">{v.texto}</p>
         <p className="mt-3 text-dourado text-sm font-semibold tracking-wide">— {v.referencia}</p>
       </div>
 
@@ -98,9 +99,9 @@ export function Home({ onSOS }: { onSOS: () => void }) {
       {/* botão de emergência */}
       <button
         onClick={onSOS}
-        className="w-full rounded-2xl bg-gradient-to-b from-red-500 to-red-700 py-5 font-title text-lg font-bold shadow-sos active:scale-[0.98] transition animate-pulseGlow"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-red-500 to-red-700 py-5 font-title text-lg font-bold shadow-sos active:scale-[0.98] transition animate-pulseGlow"
       >
-        <span className="mr-2">🛡️</span> As muralhas estão atacando
+        <Icon name="shield" size={22} /> As muralhas estão atacando
       </button>
 
       <button onClick={recair} className="w-full text-cinza/45 text-sm underline">

@@ -1,10 +1,12 @@
+import { Icon, type IconName } from './Icon'
+
 export type Aba = 'home' | 'devocional' | 'diario' | 'conquistas'
 
-const ITENS: { id: Aba; label: string; icone: string }[] = [
-  { id: 'home', label: 'Início', icone: '🏠' },
-  { id: 'devocional', label: 'Devocional', icone: '📖' },
-  { id: 'diario', label: 'Diário', icone: '✍️' },
-  { id: 'conquistas', label: 'Conquistas', icone: '🏅' },
+const ITENS: { id: Aba; label: string; icone: IconName }[] = [
+  { id: 'home', label: 'Início', icone: 'home' },
+  { id: 'devocional', label: 'Devocional', icone: 'book' },
+  { id: 'diario', label: 'Diário', icone: 'pen' },
+  { id: 'conquistas', label: 'Conquistas', icone: 'medal' },
 ]
 
 export function BottomNav({ ativa, onMudar }: { ativa: Aba; onMudar: (a: Aba) => void }) {
@@ -17,13 +19,15 @@ export function BottomNav({ ativa, onMudar }: { ativa: Aba; onMudar: (a: Aba) =>
             <button
               key={i.id}
               onClick={() => onMudar(i.id)}
-              className="relative flex-1 py-2.5 text-center text-[11px]"
+              className="relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px]"
             >
-              {on && <span className="absolute top-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-dourado" />}
-              <div className={`text-xl transition ${on ? 'scale-110' : 'grayscale opacity-60'}`}>
-                {i.icone}
-              </div>
-              <span className={on ? 'text-dourado font-semibold' : 'text-cinza/60'}>{i.label}</span>
+              {on && (
+                <span className="absolute top-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-dourado" />
+              )}
+              <span className={`transition ${on ? 'text-dourado scale-110' : 'text-cinza/45'}`}>
+                <Icon name={i.icone} size={22} />
+              </span>
+              <span className={on ? 'font-semibold text-dourado' : 'text-cinza/55'}>{i.label}</span>
             </button>
           )
         })}

@@ -13,6 +13,7 @@ export default {
       fontFamily: {
         title: ['Montserrat', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        scripture: ['"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       boxShadow: {
         glow: '0 0 40px -8px rgba(212,175,55,0.45)',

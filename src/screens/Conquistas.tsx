@@ -5,25 +5,44 @@ import { diasLivres } from '../lib/streak'
 export function Conquistas() {
   const { estado } = useApp()
   const dias = diasLivres(estado.perfil!.dataInicio)
+  const total = CONQUISTAS.length
+  const abertas = CONQUISTAS.filter(
+    (c) => estado.progresso.conquistasDesbloqueadas.includes(c.id) || dias >= c.marcaDias,
+  ).length
+
   return (
-    <div className="px-6 pt-8 pb-28 max-w-md mx-auto">
-      <h2 className="font-title text-2xl mb-4">Conquistas</h2>
-      <div className="grid grid-cols-2 gap-3">
+    <div className="px-5 pt-8 pb-28 max-w-md mx-auto animate-fadeUp">
+      <h2 className="font-title text-2xl">Conquistas</h2>
+      <p className="text-cinza/60 text-sm mt-1">
+        {abertas} de {total} medalhas conquistadas
+      </p>
+      <div className="mt-5 grid grid-cols-2 gap-3">
         {CONQUISTAS.map((c) => {
           const desbloqueada =
             estado.progresso.conquistasDesbloqueadas.includes(c.id) || dias >= c.marcaDias
           return (
             <div
               key={c.id}
-              className={`rounded-2xl border p-4 text-center ${
-                desbloqueada ? 'border-dourado bg-dourado/10' : 'border-white/10 opacity-50'
+              className={`relative overflow-hidden rounded-2xl border p-5 text-center transition ${
+                desbloqueada
+                  ? 'border-dourado/50 bg-gradient-to-b from-dourado/15 to-transparent shadow-glow-sm'
+                  : 'border-white/10 bg-white/[0.02]'
               }`}
             >
-              <div className="text-3xl">{desbloqueada ? '🏅' : '🔒'}</div>
-              <div className={`font-title mt-2 ${desbloqueada ? 'text-dourado' : 'text-cinza'}`}>
+              {desbloqueada && (
+                <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-dourado/20 blur-2xl" />
+              )}
+              <div className={`text-4xl ${desbloqueada ? '' : 'grayscale opacity-40'}`}>
+                {desbloqueada ? '🏅' : '🔒'}
+              </div>
+              <div
+                className={`font-title mt-2 leading-tight ${
+                  desbloqueada ? 'text-dourado' : 'text-cinza/70'
+                }`}
+              >
                 {c.nome}
               </div>
-              <div className="text-xs text-cinza/70 mt-1">{c.marcaDias} dias</div>
+              <div className="text-xs text-cinza/50 mt-1">{c.marcaDias} dias</div>
             </div>
           )
         })}

@@ -3,9 +3,29 @@ import { VICIOS } from '../content/vicios'
 import { useApp } from '../state/AppContext'
 
 const DESAFIOS = [7, 21, 40, 90, 180, 365]
+const TOTAL_PASSOS = 6
 
 function Cartao({ children }: { children: ReactNode }) {
-  return <div className="min-h-screen flex flex-col justify-center px-6 max-w-md mx-auto">{children}</div>
+  return (
+    <div className="min-h-screen flex flex-col justify-center px-6 max-w-md mx-auto animate-fadeUp">
+      {children}
+    </div>
+  )
+}
+
+function Passos({ passo }: { passo: number }) {
+  return (
+    <div className="flex gap-1.5 mb-8">
+      {Array.from({ length: TOTAL_PASSOS }).map((_, i) => (
+        <div
+          key={i}
+          className={`h-1 flex-1 rounded-full transition-all ${
+            i <= passo ? 'bg-dourado' : 'bg-white/10'
+          }`}
+        />
+      ))}
+    </div>
+  )
 }
 
 function Btn({
@@ -21,7 +41,7 @@ function Btn({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="mt-8 w-full rounded-xl bg-dourado py-3 font-title font-bold text-azul disabled:opacity-40"
+      className="mt-8 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition disabled:opacity-30 disabled:shadow-none"
     >
       {children}
     </button>
@@ -57,9 +77,17 @@ export function Onboarding() {
   if (passo === 0)
     return (
       <Cartao>
-        <h1 className="font-title text-4xl text-dourado">Êxodo</h1>
-        <p className="mt-2 text-cinza">Da escravidão para a liberdade.</p>
-        <label className="mt-8 block text-sm text-cinza">Como você quer ser chamado?</label>
+        <div className="text-center mb-2">
+          <div className="relative mx-auto mb-6 flex h-24 w-24 items-center justify-center">
+            <div className="absolute inset-0 rounded-full bg-dourado/20 blur-2xl animate-floatGlow" />
+            <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl border border-dourado/40 bg-white/5">
+              <span className="font-title text-5xl font-extrabold text-dourado text-glow">Ê</span>
+            </div>
+          </div>
+          <h1 className="font-title text-4xl text-dourado text-glow">Êxodo</h1>
+          <p className="mt-2 text-cinza/80">Da escravidão para a liberdade.</p>
+        </div>
+        <label className="mt-6 block text-sm text-cinza">Como você quer ser chamado?</label>
         <input
           value={nome}
           onChange={(e) => setNome(e.target.value)}
@@ -67,7 +95,7 @@ export function Onboarding() {
           className={input}
         />
         <Btn onClick={() => setPasso(1)} disabled={!nome.trim()}>
-          Continuar
+          Começar
         </Btn>
       </Cartao>
     )
@@ -75,16 +103,17 @@ export function Onboarding() {
   if (passo === 1)
     return (
       <Cartao>
+        <Passos passo={1} />
         <h2 className="font-title text-2xl">Qual batalha você vai vencer?</h2>
         <div className="mt-4 grid gap-2">
           {[...VICIOS, 'Outro'].map((v) => (
             <button
               key={v}
               onClick={() => setVicio(v)}
-              className={`rounded-xl px-4 py-3 text-left border ${
+              className={`rounded-xl px-4 py-3 text-left border transition ${
                 vicio === v
-                  ? 'border-dourado bg-dourado/15 text-dourado'
-                  : 'border-white/10 text-cinza'
+                  ? 'border-dourado bg-dourado/15 text-dourado shadow-glow-sm'
+                  : 'border-white/10 text-cinza hover:border-white/25'
               }`}
             >
               {v}
@@ -108,21 +137,22 @@ export function Onboarding() {
   if (passo === 2)
     return (
       <Cartao>
+        <Passos passo={2} />
         <h2 className="font-title text-2xl">Escolha o seu desafio</h2>
-        <p className="mt-1 text-cinza text-sm">Quantos dias você quer mirar primeiro?</p>
+        <p className="mt-1 text-cinza/70 text-sm">Quantos dias você quer mirar primeiro?</p>
         <div className="mt-4 grid grid-cols-3 gap-2">
           {DESAFIOS.map((d) => (
             <button
               key={d}
               onClick={() => setDesafio(d)}
-              className={`rounded-xl py-4 border ${
+              className={`rounded-xl py-5 border transition ${
                 desafio === d
-                  ? 'border-dourado bg-dourado/15 text-dourado'
+                  ? 'border-dourado bg-dourado/15 text-dourado shadow-glow-sm'
                   : 'border-white/10 text-cinza'
               }`}
             >
-              <div className="font-title text-xl">{d}</div>
-              dias
+              <div className="font-title text-2xl">{d}</div>
+              <div className="text-xs text-cinza/60">dias</div>
             </button>
           ))}
         </div>
@@ -133,14 +163,18 @@ export function Onboarding() {
   if (passo === 3)
     return (
       <Cartao>
+        <Passos passo={3} />
         <h2 className="font-title text-2xl">Declaração de Liberdade</h2>
-        <p className="mt-2 text-cinza">Complete a frase. Você vai reler isto nos momentos difíceis.</p>
-        <p className="mt-4 text-dourado">Estou iniciando meu Êxodo porque...</p>
+        <p className="mt-2 text-cinza/70">
+          Complete a frase. Você vai reler isto nos momentos difíceis.
+        </p>
+        <p className="mt-4 text-dourado font-title">Estou iniciando meu Êxodo porque...</p>
         <textarea
           value={declaracao}
           onChange={(e) => setDeclaracao(e.target.value)}
           rows={4}
           className={input}
+          placeholder="quero ser livre para..."
         />
         <Btn onClick={() => setPasso(4)} disabled={!declaracao.trim()}>
           Continuar
@@ -151,13 +185,15 @@ export function Onboarding() {
   if (passo === 4)
     return (
       <Cartao>
+        <Passos passo={4} />
         <h2 className="font-title text-2xl">Seus motivos</h2>
-        <p className="mt-2 text-cinza">O que você quer proteger? Família, sonhos, propósito...</p>
+        <p className="mt-2 text-cinza/70">O que você quer proteger? Família, sonhos, propósito...</p>
         <textarea
           value={motivos}
           onChange={(e) => setMotivos(e.target.value)}
           rows={4}
           className={input}
+          placeholder="Pelas pessoas e sonhos que me esperam na Terra Prometida..."
         />
         <Btn onClick={() => setPasso(5)}>Continuar</Btn>
       </Cartao>
@@ -165,8 +201,18 @@ export function Onboarding() {
 
   return (
     <Cartao>
-      <h2 className="font-title text-3xl text-dourado">Hoje você decidiu sair do Egito.</h2>
-      <p className="mt-3 text-cinza">{nome}, sua jornada para a liberdade começa agora.</p>
+      <div className="text-center">
+        <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center">
+          <div className="absolute inset-0 rounded-full bg-dourado/25 blur-2xl animate-floatGlow" />
+          <span className="relative text-5xl">🌅</span>
+        </div>
+        <h2 className="font-title text-3xl text-dourado text-glow leading-tight">
+          Hoje você decidiu<br />sair do Egito.
+        </h2>
+        <p className="mt-4 text-cinza/80">
+          {nome}, sua jornada para a liberdade começa agora.
+        </p>
+      </div>
       <Btn onClick={finalizar}>Começar minha jornada</Btn>
     </Cartao>
   )
