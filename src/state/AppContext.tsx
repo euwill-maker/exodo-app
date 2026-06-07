@@ -37,6 +37,8 @@ interface Ctx {
   salvarDiario: (entry: DiarioEntry) => void
   concluirDevocional: (chave: string) => void
   salvarReflexao: (chave: string, texto: string) => void
+  marcarTutorialVisto: () => void
+  mostrarTutorial: () => void
   resetar: () => void
 }
 
@@ -169,6 +171,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       },
     }))
 
+  const marcarTutorialVisto = () => setEstado((e) => ({ ...e, tutorialVisto: true }))
+  const mostrarTutorial = () => setEstado((e) => ({ ...e, tutorialVisto: false }))
   const resetar = () => setEstado(estadoInicial)
 
   return (
@@ -191,6 +195,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         salvarDiario,
         concluirDevocional,
         salvarReflexao,
+        marcarTutorialVisto,
+        mostrarTutorial,
         resetar,
       }}
     >

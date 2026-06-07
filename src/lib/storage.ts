@@ -11,6 +11,7 @@ export const estadoInicial: EstadoApp = {
   devocional: { concluidos: [], reflexoes: [] },
   pontos: 0,
   vitorias: 0,
+  tutorialVisto: false,
 }
 
 export function carregarEstado(): EstadoApp {

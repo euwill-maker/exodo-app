@@ -4,7 +4,7 @@ import { infoPatente } from '../lib/patente'
 import { Icon } from '../components/Icon'
 
 export function Perfil() {
-  const { estado, resetar } = useApp()
+  const { estado, resetar, mostrarTutorial } = useApp()
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
   const melhor = estado.batalhas.reduce((m, b) => Math.max(m, b.melhorSequenciaDias), 0)
@@ -70,8 +70,15 @@ export function Perfil() {
       </div>
 
       <button
+        onClick={mostrarTutorial}
+        className="mt-10 w-full rounded-xl border border-white/15 py-3 text-cinza/80 text-sm"
+      >
+        Rever tutorial
+      </button>
+
+      <button
         onClick={limpar}
-        className="mt-10 w-full rounded-xl border border-red-500/40 py-3 text-red-400/90 text-sm"
+        className="mt-3 w-full rounded-xl border border-red-500/40 py-3 text-red-400/90 text-sm"
       >
         Apagar dados e recomeçar
       </button>

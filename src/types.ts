@@ -70,4 +70,5 @@ export interface EstadoApp {
   devocional: EstadoDevocional
   pontos: number // XP acumulado (vitórias no Modo Batalha, etc.)
   vitorias: number // quantas vezes venceu uma tentação no Modo Batalha
+  tutorialVisto: boolean // já viu o tutorial de boas-vindas
 }

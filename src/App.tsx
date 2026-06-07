@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useApp } from './state/AppContext'
 import { Boasvindas } from './screens/Boasvindas'
+import { Tutorial } from './screens/Tutorial'
 import { Painel } from './screens/Painel'
 import { NovaBatalha } from './screens/NovaBatalha'
 import { BatalhaDetalhe } from './screens/BatalhaDetalhe'
@@ -32,6 +33,15 @@ export function App() {
       <>
         <Landscape />
         <Boasvindas />
+      </>
+    )
+
+  // tutorial de boas-vindas (primeira vez)
+  if (!estado.tutorialVisto)
+    return (
+      <>
+        <Landscape />
+        <Tutorial />
       </>
     )
 
