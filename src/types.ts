@@ -42,8 +42,11 @@ export interface ReflexaoDevocional {
 }
 
 export interface EstadoDevocional {
-  concluidos: string[] // chaves de devocionais concluídos
-  reflexoes: ReflexaoDevocional[]
+  concluidos: string[] // legado (chaves antigas; mantido por compatibilidade)
+  reflexoes: ReflexaoDevocional[] // chave = `dia:N`
+  diasConcluidos: number // dias do plano concluídos (sequencial)
+  ultimaData: string | null // YYYY-MM-DD do último dia concluído
+  streak: number // ofensiva (dias seguidos)
 }
 
 export interface Fase {

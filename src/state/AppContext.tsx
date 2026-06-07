@@ -35,7 +35,7 @@ interface Ctx {
   toggleHabito: (habitoId: string, dataISO: string) => void
   removerHabito: (habitoId: string) => void
   salvarDiario: (entry: DiarioEntry) => void
-  concluirDevocional: (chave: string) => void
+  concluirDia: () => void
   salvarReflexao: (chave: string, texto: string) => void
   marcarTutorialVisto: () => void
   mostrarTutorial: () => void
@@ -155,12 +155,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
       diario: [entry, ...e.diario.filter((d) => d.data !== entry.data)],
     }))
 
-  const concluirDevocional = (chave: string) =>
-    setEstado((e) =>
-      e.devocional.concluidos.includes(chave)
-        ? e
-        : { ...e, devocional: { ...e.devocional, concluidos: [...e.devocional.concluidos, chave] } },
-    )
+  const concluirDia = () =>
+    setEstado((e) => {
+      const hoje = new Date().toISOString().slice(0, 10)
+      if (e.devocional.ultimaData === hoje) return e // já leu hoje — 1 por dia
+      const ontem = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10)
+      const streak = e.devocional.ultimaData === ontem ? e.devocional.streak + 1 : 1
+      return {
+        ...e,
+        devocional: {
+          ...e.devocional,
+          diasConcluidos: e.devocional.diasConcluidos + 1,
+          ultimaData: hoje,
+          streak,
+        },
+      }
+    })
 
   const salvarReflexao = (chave: string, texto: string) =>
     setEstado((e) => ({
@@ -193,7 +203,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleHabito,
         removerHabito,
         salvarDiario,
-        concluirDevocional,
+        concluirDia,
         salvarReflexao,
         marcarTutorialVisto,
         mostrarTutorial,

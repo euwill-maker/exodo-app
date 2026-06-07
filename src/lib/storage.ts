@@ -8,7 +8,7 @@ export const estadoInicial: EstadoApp = {
   batalhas: [],
   habitos: [],
   diario: [],
-  devocional: { concluidos: [], reflexoes: [] },
+  devocional: { concluidos: [], reflexoes: [], diasConcluidos: 0, ultimaData: null, streak: 0 },
   pontos: 0,
   vitorias: 0,
   tutorialVisto: false,
