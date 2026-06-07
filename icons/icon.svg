@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0D1B2A"/>
+  <!-- horizonte iluminado -->
+  <circle cx="256" cy="300" r="150" fill="#15263b"/>
+  <path d="M106 300 Q256 250 406 300" stroke="#D4AF37" stroke-width="6" fill="none" opacity="0.5"/>
+  <!-- Ê dourado -->
+  <g fill="#D4AF37">
+    <rect x="180" y="150" width="40" height="212" rx="8"/>
+    <rect x="180" y="150" width="150" height="40" rx="8"/>
+    <rect x="180" y="236" width="120" height="38" rx="8"/>
+    <rect x="180" y="322" width="150" height="40" rx="8"/>
+    <!-- acento circunflexo -->
+    <path d="M210 118 L233 96 L256 118 L240 118 L233 110 L226 118 Z"/>
+  </g>
+</svg>
