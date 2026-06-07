@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Batalha, DiarioEntry, EstadoApp, Habito } from '../types'
-import { carregarEstado, salvarEstado, estadoInicial } from '../lib/storage'
+import { carregarEstado, salvarEstado, estadoInicial, apagarFoto } from '../lib/storage'
 import { registrarRecaidaBatalha } from '../lib/relapse'
 import { diasLivres } from '../lib/streak'
 import { conquistasAte } from '../lib/milestones'
@@ -28,6 +28,8 @@ interface Ctx {
   addObjetivo: (batalhaId: string, texto: string) => void
   toggleObjetivo: (batalhaId: string, objId: string) => void
   removerObjetivo: (batalhaId: string, objId: string) => void
+  addFotos: (batalhaId: string, ids: string[]) => void
+  removerFoto: (batalhaId: string, id: string) => void
   addHabito: (nome: string, icone: string) => void
   toggleHabito: (habitoId: string, dataISO: string) => void
   removerHabito: (habitoId: string) => void
@@ -83,7 +85,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
 
   const removerBatalha = (id: string) =>
-    setEstado((e) => ({ ...e, batalhas: e.batalhas.filter((b) => b.id !== id) }))
+    setEstado((e) => {
+      const alvo = e.batalhas.find((b) => b.id === id)
+      alvo?.fotoIds.forEach((fid) => {
+        void apagarFoto(fid)
+      })
+      return { ...e, batalhas: e.batalhas.filter((b) => b.id !== id) }
+    })
+
+  const addFotos = (batalhaId: string, ids: string[]) =>
+    mapBatalha(batalhaId, (b) => ({ ...b, fotoIds: [...b.fotoIds, ...ids] }))
+
+  const removerFoto = (batalhaId: string, id: string) => {
+    void apagarFoto(id)
+    mapBatalha(batalhaId, (b) => ({ ...b, fotoIds: b.fotoIds.filter((f) => f !== id) }))
+  }
 
   const registrarRecaida = (batalhaId: string) =>
     mapBatalha(batalhaId, (b) => registrarRecaidaBatalha(b))
@@ -165,6 +181,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addObjetivo,
         toggleObjetivo,
         removerObjetivo,
+        addFotos,
+        removerFoto,
         addHabito,
         toggleHabito,
         removerHabito,

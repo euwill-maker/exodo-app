@@ -1,6 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { useApp } from '../state/AppContext'
 import { Icon, type IconName } from '../components/Icon'
+import { Fotos } from '../components/Fotos'
 import type { Batalha } from '../types'
 
 type Modo = 'hub' | 'armadura' | 'onda' | 'guerra'
@@ -248,6 +249,11 @@ function Guerra({
           <p className="text-white/90 whitespace-pre-wrap">
             {p.motivos || 'Pelas pessoas e sonhos que te esperam na Terra Prometida.'}
           </p>
+          {p.fotoIds.length > 0 && (
+            <div className="mt-3">
+              <Fotos ids={p.fotoIds} />
+            </div>
+          )}
         </div>
 
         <p className="mt-4 text-center text-white/85 leading-relaxed">

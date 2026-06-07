@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { JourneyBar } from '../components/JourneyBar'
 import { ProgressRing } from '../components/ProgressRing'
 import { Icon, type IconName } from '../components/Icon'
+import { Fotos, AddFotos } from '../components/Fotos'
 import { useApp } from '../state/AppContext'
 import { partesTempo, diasLivres } from '../lib/streak'
 import { faseAtual } from '../lib/journey'
@@ -18,8 +19,16 @@ export function BatalhaDetalhe({
   onVoltar: () => void
   onSOS: () => void
 }) {
-  const { estado, registrarRecaida, addObjetivo, toggleObjetivo, removerObjetivo, removerBatalha } =
-    useApp()
+  const {
+    estado,
+    registrarRecaida,
+    addObjetivo,
+    toggleObjetivo,
+    removerObjetivo,
+    removerBatalha,
+    addFotos,
+    removerFoto,
+  } = useApp()
   const b = estado.batalhas.find((x) => x.id === batalhaId)
   const [novoObj, setNovoObj] = useState('')
 
@@ -166,6 +175,16 @@ export function BatalhaDetalhe({
           >
             <Icon name="plus" size={18} />
           </button>
+        </div>
+      </div>
+
+      {/* motivos & fotos */}
+      <div>
+        <h3 className="font-title text-dourado text-sm uppercase tracking-wide mb-2">Meus motivos</h3>
+        {b.motivos && <p className="text-cinza/90 text-sm mb-3 whitespace-pre-wrap">{b.motivos}</p>}
+        <div className="space-y-2">
+          <Fotos ids={b.fotoIds} onRemover={(id) => removerFoto(b.id, id)} />
+          <AddFotos onAdd={(ids) => addFotos(b.id, ids)} />
         </div>
       </div>
 

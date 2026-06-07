@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { VICIOS } from '../content/vicios'
 import { useApp, novoId } from '../state/AppContext'
 import { Icon } from '../components/Icon'
+import { Fotos, AddFotos } from '../components/Fotos'
 import type { Objetivo } from '../types'
 
 const DESAFIOS = [7, 21, 40, 90, 180, 365]
@@ -74,6 +75,7 @@ export function NovaBatalha({
   const [declaracao, setDeclaracao] = useState('')
   const [motivos, setMotivos] = useState('')
   const [objetivos, setObjetivos] = useState<Objetivo[]>([])
+  const [fotoIds, setFotoIds] = useState<string[]>([])
   const [novoObj, setNovoObj] = useState('')
   const [assinatura, setAssinatura] = useState('')
   const [aceito, setAceito] = useState(false)
@@ -93,7 +95,7 @@ export function NovaBatalha({
       desafioDias: desafio,
       declaracao: declaracao.trim(),
       motivos: motivos.trim(),
-      fotoIds: [],
+      fotoIds,
       objetivos,
       compromissoAceito: true,
     })
@@ -168,7 +170,12 @@ export function NovaBatalha({
       <Wrap passo={3} onVoltar={voltar}>
         <h2 className="font-title text-2xl">Seus motivos</h2>
         <p className="mt-2 text-cinza/70">O que você quer proteger? Família, sonhos, propósito...</p>
-        <textarea value={motivos} onChange={(e) => setMotivos(e.target.value)} rows={4} className={input} placeholder="Pelas pessoas e sonhos que me esperam na Terra Prometida..." />
+        <textarea value={motivos} onChange={(e) => setMotivos(e.target.value)} rows={3} className={input} placeholder="Pelas pessoas e sonhos que me esperam na Terra Prometida..." />
+        <p className="mt-4 text-cinza/70 text-sm">Fotos da família, sonhos e metas (aparecem na Muralha):</p>
+        <div className="mt-2 space-y-2">
+          <Fotos ids={fotoIds} onRemover={(id) => setFotoIds((f) => f.filter((x) => x !== id))} />
+          <AddFotos onAdd={(ids) => setFotoIds((f) => [...f, ...ids])} />
+        </div>
         <Btn onClick={() => setPasso(4)}>Continuar</Btn>
       </Wrap>
     )
