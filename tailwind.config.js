@@ -4,11 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        azul: '#0D1B2A',
-        'azul-suave': '#15263b',
-        dourado: '#D4AF37',
-        'dourado-claro': '#F0D77B',
-        cinza: '#EAEAEA',
+        azul: '#211710',
+        'azul-suave': '#2E2318',
+        dourado: '#C9A24B',
+        'dourado-claro': '#E6C879',
+        terra: '#B5532A',
+        turq: '#2C7DA0',
+        cinza: '#E8D8B5',
       },
       fontFamily: {
         title: ['Montserrat', 'sans-serif'],
@@ -16,8 +18,8 @@ export default {
         scripture: ['"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       boxShadow: {
-        glow: '0 0 40px -8px rgba(212,175,55,0.45)',
-        'glow-sm': '0 0 20px -6px rgba(212,175,55,0.4)',
+        glow: '0 0 40px -8px rgba(201,162,75,0.45)',
+        'glow-sm': '0 0 20px -6px rgba(201,162,75,0.4)',
         sos: '0 10px 40px -6px rgba(220,38,38,0.55)',
       },
       keyframes: {

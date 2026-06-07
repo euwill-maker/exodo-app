@@ -14,12 +14,12 @@ body {
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   -webkit-tap-highlight-color: transparent;
-  background-color: #0d1b2a;
-  /* amanhecer dourado no topo + degradê profundo (deserto ao anoitecer/raiar) */
+  background-color: #211710;
+  /* amanhecer dourado no topo + degradê quente (deserto ao entardecer) */
   background-image:
-    radial-gradient(120% 80% at 50% -20%, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0) 45%),
-    radial-gradient(90% 60% at 90% 10%, rgba(70, 110, 160, 0.12) 0%, rgba(70, 110, 160, 0) 50%),
-    linear-gradient(180deg, #0f2236 0%, #0d1b2a 40%, #0a1320 100%);
+    radial-gradient(120% 80% at 50% -20%, rgba(201, 162, 75, 0.18) 0%, rgba(201, 162, 75, 0) 45%),
+    radial-gradient(90% 60% at 90% 10%, rgba(181, 83, 42, 0.12) 0%, rgba(181, 83, 42, 0) 50%),
+    linear-gradient(180deg, #2a1f14 0%, #211710 42%, #190f08 100%);
   background-attachment: fixed;
 }
 

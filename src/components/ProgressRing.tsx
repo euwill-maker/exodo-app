@@ -26,8 +26,8 @@ export function ProgressRing({ progress, size = 240, stroke = 12, children }: Pr
       <svg width={size} height={size} className="relative -rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F0D77B" />
-            <stop offset="100%" stopColor="#D4AF37" />
+            <stop offset="0%" stopColor="#E6C879" />
+            <stop offset="100%" stopColor="#C9A24B" />
           </linearGradient>
         </defs>
         <circle cx={size / 2} cy={size / 2} r={r} stroke="rgba(255,255,255,0.08)" strokeWidth={stroke} fill="none" />
@@ -43,7 +43,7 @@ export function ProgressRing({ progress, size = 240, stroke = 12, children }: Pr
           strokeDashoffset={circ * (1 - anim)}
           style={{
             transition: 'stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
-            filter: 'drop-shadow(0 0 6px rgba(212,175,55,0.6))',
+            filter: 'drop-shadow(0 0 6px rgba(201,162,75,0.6))',
           }}
         />
       </svg>

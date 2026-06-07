@@ -225,7 +225,7 @@ export function NovaBatalha({
         Eu, <span className="text-dourado font-semibold not-italic font-body">{estado.nome}</span>, decido hoje sair da escravidão de <span className="text-dourado not-italic font-body">{vicioFinal}</span>. Comprometo-me a perseverar um dia de cada vez, a buscar a Deus nos momentos de fraqueza e a não desistir, mesmo após uma queda. Esta é a minha travessia rumo à liberdade.
       </div>
       <label className="mt-4 flex items-start gap-3 text-sm text-cinza/85">
-        <input type="checkbox" checked={aceito} onChange={(e) => setAceito(e.target.checked)} className="mt-1 h-5 w-5 accent-[#D4AF37]" />
+        <input type="checkbox" checked={aceito} onChange={(e) => setAceito(e.target.checked)} className="mt-1 h-5 w-5 accent-[#C9A24B]" />
         <span>Eu me comprometo com este pacto diante de Deus.</span>
       </label>
       <input
