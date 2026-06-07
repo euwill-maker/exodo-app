@@ -37,12 +37,17 @@ export default {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        breathe: {
+          '0%, 100%': { transform: 'scale(0.78)' },
+          '50%': { transform: 'scale(1.12)' },
+        },
       },
       animation: {
         pulseGlow: 'pulseGlow 2.4s ease-out infinite',
         floatGlow: 'floatGlow 4s ease-in-out infinite',
         fadeUp: 'fadeUp 0.6s ease-out both',
         shimmer: 'shimmer 3s linear infinite',
+        breathe: 'breathe 11s ease-in-out infinite',
       },
     },
   },

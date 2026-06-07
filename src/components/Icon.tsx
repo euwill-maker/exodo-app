@@ -24,6 +24,10 @@ export type IconName =
   | 'back'
   | 'user'
   | 'pray'
+  | 'sword'
+  | 'flame'
+  | 'music'
+  | 'phone'
 
 const PATHS: Record<IconName, ReactElement> = {
   // elo de corrente partido ao meio — saída da escravidão
@@ -167,6 +171,31 @@ const PATHS: Record<IconName, ReactElement> = {
   pray: (
     <>
       <path d="M12 3v8M8 21c0-5 1.5-8 4-10 2.5 2 4 5 4 10M9 11l-3 3M15 11l3 3" />
+    </>
+  ),
+  sword: (
+    <>
+      <path d="M14.5 3.5H20V9l-9.5 9.5" />
+      <path d="M14.5 9.5 9 4" opacity="0" />
+      <path d="M4 20l3-3M6.5 17.5l-2.5-1 1-2.5L18 3.5" />
+      <path d="M5 15l4 4" />
+    </>
+  ),
+  flame: (
+    <>
+      <path d="M12 3c2.5 3.5 5 5.5 5 9a5 5 0 0 1-10 0c0-1.6.7-2.8 1.7-3.8.4 1.2 1.1 1.8 2 1.8C12.2 8.5 11 6 12 3z" />
+    </>
+  ),
+  music: (
+    <>
+      <path d="M9 18V6l11-2v12" />
+      <circle cx="6" cy="18" r="2.4" />
+      <circle cx="17" cy="16" r="2.4" />
+    </>
+  ),
+  phone: (
+    <>
+      <path d="M6.5 3.5 9 4l1 4-2 1.5a11 11 0 0 0 5 5L14 12l4 1 .5 2.5a2 2 0 0 1-2 2.4A14 14 0 0 1 4 5.5a2 2 0 0 1 2.5-2z" />
     </>
   ),
 }
