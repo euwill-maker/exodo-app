@@ -31,8 +31,11 @@ export interface Habito {
 export interface DiarioEntry {
   data: string // YYYY-MM-DD
   humor: string
+  intensidade: number // 0-10: intensidade da vontade/tentação no dia
+  gatilhos: string[] // gatilhos enfrentados
   oQueAconteceu: string
   vitorias: string
+  gratidao: string // pelo que sou grato hoje
   oracao: string
 }
 
