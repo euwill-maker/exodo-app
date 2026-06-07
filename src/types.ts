@@ -30,6 +30,7 @@ export interface Fase {
   id: string
   nome: string
   tema: string
+  icone: string
   minDias: number
   maxDias: number | null // null = sem teto
   mensagem: string
