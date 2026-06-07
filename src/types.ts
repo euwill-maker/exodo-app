@@ -68,4 +68,6 @@ export interface EstadoApp {
   habitos: Habito[]
   diario: DiarioEntry[]
   devocional: EstadoDevocional
+  pontos: number // XP acumulado (vitórias no Modo Batalha, etc.)
+  vitorias: number // quantas vezes venceu uma tentação no Modo Batalha
 }

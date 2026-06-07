@@ -1,5 +1,6 @@
 import { useApp } from '../state/AppContext'
 import { diasLivres } from '../lib/streak'
+import { infoPatente } from '../lib/patente'
 import { Icon } from '../components/Icon'
 
 export function Perfil() {
@@ -7,6 +8,7 @@ export function Perfil() {
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
   const melhor = estado.batalhas.reduce((m, b) => Math.max(m, b.melhorSequenciaDias), 0)
+  const patente = infoPatente(estado.pontos)
 
   const limpar = () => {
     if (confirm('Apagar TODOS os dados e recomeçar do zero? Isto não pode ser desfeito.')) {
@@ -21,7 +23,28 @@ export function Perfil() {
           <Icon name="user" size={36} />
         </div>
         <h1 className="font-title text-2xl mt-3">{estado.nome}</h1>
-        <p className="text-cinza/55 text-sm">Em travessia rumo à liberdade</p>
+        <p className="text-dourado text-sm font-title">{patente.atual.nome}</p>
+      </div>
+
+      {/* patente / XP */}
+      <div className="mt-6 rounded-2xl border border-dourado/30 bg-gradient-to-b from-dourado/10 to-transparent p-4">
+        <div className="flex items-center justify-between">
+          <span className="font-title text-dourado">⚔️ {patente.atual.nome}</span>
+          <span className="text-cinza/70 text-sm">{estado.pontos} XP</span>
+        </div>
+        <div className="mt-2 h-2.5 rounded-full bg-white/10 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-dourado to-dourado-claro transition-all duration-700"
+            style={{ width: `${Math.round(patente.progresso * 100)}%` }}
+          />
+        </div>
+        <p className="text-cinza/55 text-xs mt-2">
+          {patente.proxima
+            ? `Faltam ${patente.faltam} XP para ${patente.proxima.nome}`
+            : 'Patente máxima alcançada! 🏆'}
+          {' · '}
+          {estado.vitorias} {estado.vitorias === 1 ? 'vitória' : 'vitórias'} no Modo Batalha
+        </p>
       </div>
 
       <div className="mt-8 grid grid-cols-3 gap-3 text-center">

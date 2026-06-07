@@ -10,6 +10,7 @@ import { Devocional } from './screens/Devocional'
 import { Diario } from './screens/Diario'
 import { Perfil } from './screens/Perfil'
 import { BottomNav, type Aba } from './components/BottomNav'
+import { BotaoBatalha } from './components/BotaoBatalha'
 import { Landscape } from './components/Landscape'
 
 export function App() {
@@ -17,7 +18,13 @@ export function App() {
   const [aba, setAba] = useState<Aba>('inicio')
   const [batalhaAberta, setBatalhaAberta] = useState<string | null>(null)
   const [criando, setCriando] = useState(false)
-  const [muralha, setMuralha] = useState<string | null>(null)
+  const [muralhaAberta, setMuralhaAberta] = useState(false)
+  const [muralhaBatalha, setMuralhaBatalha] = useState<string | null>(null)
+
+  const abrirMuralha = (id: string | null) => {
+    setMuralhaBatalha(id)
+    setMuralhaAberta(true)
+  }
 
   // boas-vindas (nome ainda não definido)
   if (!estado.nome)
@@ -44,12 +51,12 @@ export function App() {
       </>
     )
 
-  // muralha da tentação (tela cheia)
-  if (muralha)
+  // modo batalha (tela cheia)
+  if (muralhaAberta)
     return (
       <>
         <Landscape />
-        <Muralha batalhaId={muralha} onFechar={() => setMuralha(null)} />
+        <Muralha batalhaId={muralhaBatalha} onFechar={() => setMuralhaAberta(false)} />
       </>
     )
 
@@ -61,7 +68,7 @@ export function App() {
         <BatalhaDetalhe
           batalhaId={batalhaAberta}
           onVoltar={() => setBatalhaAberta(null)}
-          onSOS={() => setMuralha(batalhaAberta)}
+          onSOS={() => abrirMuralha(batalhaAberta)}
         />
       </>
     )
@@ -78,6 +85,7 @@ export function App() {
         {aba === 'diario' && <Diario />}
         {aba === 'perfil' && <Perfil />}
       </div>
+      {estado.batalhas.length > 0 && <BotaoBatalha comNav onClick={() => abrirMuralha(null)} />}
       <BottomNav ativa={aba} onMudar={setAba} />
     </div>
   )

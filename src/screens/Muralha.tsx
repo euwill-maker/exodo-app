@@ -2,9 +2,18 @@ import { useState, useEffect, type ReactNode } from 'react'
 import { useApp } from '../state/AppContext'
 import { Icon, type IconName } from '../components/Icon'
 import { Fotos } from '../components/Fotos'
+import { infoPatente, PONTOS_POR_VITORIA } from '../lib/patente'
 import type { Batalha } from '../types'
 
-type Modo = 'hub' | 'armadura' | 'onda' | 'guerra'
+type Modo = 'hub' | 'armadura' | 'onda' | 'guerra' | 'vitoria'
+
+function vibrar(ms: number | number[]) {
+  try {
+    navigator.vibrate?.(ms)
+  } catch {
+    /* ignora */
+  }
+}
 
 /* ---------- Shell comum ---------- */
 function Shell({
@@ -60,17 +69,20 @@ function Hub({ onEscolher, onFechar }: { onEscolher: (m: Modo) => void; onFechar
       <button onClick={onFechar} className="self-end text-cinza/60 text-sm">Fechar</button>
       <div className="flex-1 flex flex-col justify-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-red-500/40 bg-red-500/10 text-red-400 animate-pulseGlow">
-          <Icon name="shield" size={30} />
+          <Icon name="sword" size={30} />
         </div>
-        <h2 className="font-title text-3xl text-center text-glow">As muralhas estão atacando</h2>
+        <h2 className="font-title text-3xl text-center text-glow">A tentação atacou.</h2>
         <p className="text-cinza/80 text-center mt-2">
-          Respire. Você não vai enfrentar isso sozinho. Escolha a sua defesa:
+          Respire — você vai vencer. Escolha sua arma:
         </p>
         <div className="mt-7 space-y-3">
           {opcoes.map((o) => (
             <button
               key={o.id}
-              onClick={() => onEscolher(o.id)}
+              onClick={() => {
+                vibrar(20)
+                onEscolher(o.id)
+              }}
               className="flex w-full items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left transition hover:border-dourado/50 active:scale-[0.99]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-dourado/40 bg-dourado/10 text-dourado">
@@ -109,6 +121,11 @@ function Armadura({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () =
   const [i, setI] = useState(0)
   const concluido = i >= ARMADURA.length
 
+  const avancar = () => {
+    vibrar(35)
+    setI((v) => v + 1)
+  }
+
   if (concluido)
     return (
       <Shell onSair={onVoltar} rotulo="Voltar">
@@ -128,12 +145,11 @@ function Armadura({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () =
     <Shell onSair={onVoltar} rotulo="Voltar">
       <div className="animate-fadeUp" key={i}>
         <p className="text-center text-cinza/60 text-xs uppercase tracking-[0.2em]">Vista a Armadura de Deus</p>
-        {/* progresso das peças */}
         <div className="mt-3 flex justify-center gap-2">
           {ARMADURA.map((_, idx) => (
             <span
               key={idx}
-              className={`h-2 w-2 rounded-full ${idx <= i ? 'bg-dourado' : 'bg-white/15'}`}
+              className={`h-2 w-2 rounded-full transition-all ${idx < i ? 'bg-dourado' : idx === i ? 'bg-dourado/60 scale-125' : 'bg-white/15'}`}
             />
           ))}
         </div>
@@ -148,8 +164,8 @@ function Armadura({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () =
         <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center text-cinza/90">
           {peca.acao}
         </div>
-        <Btn onClick={() => setI(i + 1)}>
-          {i === ARMADURA.length - 1 ? 'Empunhar a espada' : 'Vestir e avançar'}
+        <Btn onClick={avancar}>
+          {i === ARMADURA.length - 1 ? 'Empunhar a espada ⚔️' : 'Vestir e avançar'}
         </Btn>
       </div>
     </Shell>
@@ -157,7 +173,7 @@ function Armadura({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () =
 }
 
 /* ---------- SURFE A ONDA (urge surfing) ---------- */
-const ONDA_TOTAL = 180 // segundos
+const ONDA_TOTAL = 180
 
 function faseOnda(fr: number): string {
   if (fr < 0.25) return 'A onda está subindo. Respire fundo — só aguenta.'
@@ -169,7 +185,10 @@ function faseOnda(fr: number): string {
 function Onda({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () => void }) {
   const [restante, setRestante] = useState(ONDA_TOTAL)
   useEffect(() => {
-    if (restante <= 0) return
+    if (restante <= 0) {
+      vibrar([60, 40, 120])
+      return
+    }
     const t = setTimeout(() => setRestante((s) => s - 1), 1000)
     return () => clearTimeout(t)
   }, [restante])
@@ -183,7 +202,6 @@ function Onda({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () => vo
     <Shell onSair={onVoltar} rotulo="Voltar">
       <div className="text-center animate-fadeUp">
         <p className="text-cinza/60 text-xs uppercase tracking-[0.2em]">A vontade é uma onda</p>
-        {/* orb que respira */}
         <div className="relative mx-auto my-8 h-56 w-56">
           <div className="absolute inset-0 rounded-full bg-dourado/10 blur-2xl" />
           <div className="absolute inset-4 rounded-full border-2 border-dourado/40 bg-gradient-to-b from-dourado/15 to-transparent animate-breathe" />
@@ -199,7 +217,6 @@ function Onda({ onVoltar, onVencer }: { onVoltar: () => void; onVencer: () => vo
           </div>
         </div>
         <p className="font-title text-lg text-white/90 px-4 min-h-[3.5rem]">{faseOnda(fr)}</p>
-        {/* barra da onda diminuindo */}
         <div className="mt-4 h-2 rounded-full bg-white/10 overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-dourado to-dourado-claro transition-all duration-1000"
@@ -222,10 +239,11 @@ function Guerra({
   onVoltar,
   onVencer,
 }: {
-  p: Batalha
+  p: Batalha | null
   onVoltar: () => void
   onVencer: () => void
 }) {
+  const [declarou, setDeclarou] = useState(false)
   const louvor = 'https://www.youtube.com/results?search_query=louvor+adora%C3%A7%C3%A3o+para+momentos+dif%C3%ADceis'
   const pedirOracao = `https://wa.me/?text=${encodeURIComponent(
     'Irmão(ã), estou numa batalha difícil agora e preciso de uma oração. Pode orar por mim?',
@@ -240,28 +258,41 @@ function Guerra({
           <h2 className="font-title text-2xl text-dourado mt-1">Clame, e serás salvo.</h2>
         </div>
 
-        <blockquote className="mt-5 rounded-2xl border border-dourado/20 bg-white/[0.03] p-4 font-scripture text-xl italic text-white/90 text-center">
-          “Estou iniciando meu Êxodo porque {p.declaracao}”
-        </blockquote>
+        {p?.declaracao && (
+          <blockquote className="mt-5 rounded-2xl border border-dourado/20 bg-white/[0.03] p-4 font-scripture text-xl italic text-white/90 text-center">
+            “Estou iniciando meu Êxodo porque {p.declaracao}”
+          </blockquote>
+        )}
 
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
           <p className="text-cinza/60 text-xs uppercase tracking-wide mb-1">Por isto você luta</p>
           <p className="text-white/90 whitespace-pre-wrap">
-            {p.motivos || 'Pelas pessoas e sonhos que te esperam na Terra Prometida.'}
+            {p?.motivos || 'Pelas pessoas e sonhos que te esperam na Terra Prometida.'}
           </p>
-          {p.fotoIds.length > 0 && (
+          {p && p.fotoIds.length > 0 && (
             <div className="mt-3">
               <Fotos ids={p.fotoIds} />
             </div>
           )}
         </div>
 
-        <p className="mt-4 text-center text-white/85 leading-relaxed">
-          Senhor, eu clamo a Ti. Levanta-te como meu guerreiro e luta por mim. Esta vontade não vai
-          me dominar, porque maior é o que está em mim. Eu venço em Teu nome. Amém.
-        </p>
+        {/* declaração em voz alta — interação */}
+        <button
+          onClick={() => {
+            vibrar(50)
+            setDeclarou(true)
+          }}
+          className={`mt-4 w-full rounded-2xl border p-4 text-center transition active:scale-[0.98] ${
+            declarou ? 'border-dourado/60 bg-dourado/10' : 'border-white/15'
+          }`}
+        >
+          <p className="font-title text-lg text-white/95">
+            {declarou ? '🔥 “Maior é o que está em mim!”' : 'Tocar e declarar em voz alta'}
+          </p>
+          {declarou && <p className="text-dourado text-sm mt-1">Você declarou. O céu te ouviu. 🙌</p>}
+        </button>
 
-        <div className="mt-5 grid grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-2 gap-3">
           <a
             href={louvor}
             target="_blank"
@@ -286,20 +317,77 @@ function Guerra({
   )
 }
 
+/* ---------- TELA DE VITÓRIA (recompensa) ---------- */
+function Vitoria({ onFechar }: { onFechar: () => void }) {
+  const { estado } = useApp()
+  const info = infoPatente(estado.pontos)
+  return (
+    <div className="min-h-screen px-6 py-8 max-w-md mx-auto flex flex-col justify-center text-center relative overflow-hidden animate-fadeUp">
+      {/* faíscas */}
+      {['✨', '⚡', '✨', '⭐', '✨', '⚡'].map((s, i) => (
+        <span
+          key={i}
+          className="absolute text-2xl animate-floatGlow"
+          style={{ left: `${10 + i * 14}%`, top: `${12 + (i % 3) * 22}%`, animationDelay: `${i * 0.3}s` }}
+        >
+          {s}
+        </span>
+      ))}
+      <div className="relative">
+        <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-b from-dourado-claro to-dourado text-azul shadow-glow animate-pulseGlow">
+          <Icon name="medal" size={44} />
+        </div>
+        <h2 className="font-title text-4xl text-dourado text-glow">Vitória!</h2>
+        <p className="text-cinza/85 mt-2">Você resistiu e venceu mais uma batalha. 🙌</p>
+
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-dourado/40 bg-dourado/10 px-5 py-2 text-dourado font-title text-xl">
+          +{PONTOS_POR_VITORIA} XP
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-title text-dourado">{info.atual.nome}</span>
+            <span className="text-cinza/60">{estado.pontos} XP</span>
+          </div>
+          <div className="mt-2 h-2 rounded-full bg-white/10 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-dourado to-dourado-claro transition-all duration-700"
+              style={{ width: `${Math.round(info.progresso * 100)}%` }}
+            />
+          </div>
+          <p className="text-cinza/55 text-xs mt-2">
+            {info.proxima ? `Faltam ${info.faltam} XP para ${info.proxima.nome}` : 'Patente máxima alcançada!'}
+            {' · '}
+            {estado.vitorias} vitórias
+          </p>
+        </div>
+
+        <Btn onClick={onFechar}>Continuar firme</Btn>
+      </div>
+    </div>
+  )
+}
+
 /* ---------- Componente principal ---------- */
-export function Muralha({ batalhaId, onFechar }: { batalhaId: string; onFechar: () => void }) {
+export function Muralha({
+  batalhaId,
+  onFechar,
+}: {
+  batalhaId?: string | null
+  onFechar: () => void
+}) {
   const { estado, registrarVitoria } = useApp()
-  const p = estado.batalhas.find((b) => b.id === batalhaId)
+  const p =
+    estado.batalhas.find((b) => b.id === batalhaId) ?? estado.batalhas[0] ?? null
   const [modo, setModo] = useState<Modo>('hub')
-  if (!p) {
-    onFechar()
-    return null
-  }
+
   const vencer = () => {
+    vibrar([40, 50, 80])
     registrarVitoria()
-    onFechar()
+    setModo('vitoria')
   }
 
+  if (modo === 'vitoria') return <Vitoria onFechar={onFechar} />
   if (modo === 'armadura') return <Armadura onVoltar={() => setModo('hub')} onVencer={vencer} />
   if (modo === 'onda') return <Onda onVoltar={() => setModo('hub')} onVencer={vencer} />
   if (modo === 'guerra') return <Guerra p={p} onVoltar={() => setModo('hub')} onVencer={vencer} />

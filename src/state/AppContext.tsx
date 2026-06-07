@@ -4,6 +4,7 @@ import { carregarEstado, salvarEstado, estadoInicial, apagarFoto } from '../lib/
 import { registrarRecaidaBatalha } from '../lib/relapse'
 import { diasLivres } from '../lib/streak'
 import { conquistasAte } from '../lib/milestones'
+import { PONTOS_POR_VITORIA } from '../lib/patente'
 
 export function novoId(): string {
   try {
@@ -104,7 +105,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const registrarRecaida = (batalhaId: string) =>
     mapBatalha(batalhaId, (b) => registrarRecaidaBatalha(b))
 
-  const registrarVitoria = () => {}
+  const registrarVitoria = () =>
+    setEstado((e) => ({ ...e, pontos: e.pontos + PONTOS_POR_VITORIA, vitorias: e.vitorias + 1 }))
 
   const addObjetivo = (batalhaId: string, texto: string) =>
     mapBatalha(batalhaId, (b) => ({

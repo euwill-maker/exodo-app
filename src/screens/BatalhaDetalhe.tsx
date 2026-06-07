@@ -3,6 +3,7 @@ import { JourneyBar } from '../components/JourneyBar'
 import { ProgressRing } from '../components/ProgressRing'
 import { Icon, type IconName } from '../components/Icon'
 import { Fotos, AddFotos } from '../components/Fotos'
+import { BotaoBatalha } from '../components/BotaoBatalha'
 import { useApp } from '../state/AppContext'
 import { partesTempo, diasLivres } from '../lib/streak'
 import { faseAtual } from '../lib/journey'
@@ -213,17 +214,12 @@ export function BatalhaDetalhe({
         </div>
       </div>
 
-      {/* emergência */}
-      <button
-        onClick={onSOS}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-red-500 to-red-700 py-5 font-title text-lg font-bold shadow-sos active:scale-[0.98] transition animate-pulseGlow"
-      >
-        <Icon name="shield" size={22} /> As muralhas estão atacando
-      </button>
-
       <button onClick={recair} className="w-full text-cinza/45 text-sm underline">
         Tive uma recaída
       </button>
+
+      {/* botão flutuante de socorro (sempre visível) */}
+      <BotaoBatalha onClick={onSOS} />
     </div>
   )
 }

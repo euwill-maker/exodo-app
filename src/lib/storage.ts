@@ -9,6 +9,8 @@ export const estadoInicial: EstadoApp = {
   habitos: [],
   diario: [],
   devocional: { concluidos: [], reflexoes: [] },
+  pontos: 0,
+  vitorias: 0,
 }
 
 export function carregarEstado(): EstadoApp {

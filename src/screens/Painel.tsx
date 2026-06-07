@@ -1,6 +1,7 @@
 import { useApp } from '../state/AppContext'
 import { diasLivres } from '../lib/streak'
 import { faseAtual } from '../lib/journey'
+import { infoPatente } from '../lib/patente'
 import { Icon, type IconName } from '../components/Icon'
 
 export function Painel({
@@ -11,11 +12,17 @@ export function Painel({
   onNova: () => void
 }) {
   const { estado } = useApp()
+  const patente = infoPatente(estado.pontos)
 
   return (
     <div className="px-5 pt-10 pb-28 max-w-md mx-auto animate-fadeUp">
-      <p className="text-cinza/70">Olá, <span className="text-white font-semibold">{estado.nome}</span> 👋</p>
-      <h1 className="font-title text-3xl text-dourado text-glow mt-1">Suas batalhas</h1>
+      <div className="flex items-center justify-between">
+        <p className="text-cinza/70">Olá, <span className="text-white font-semibold">{estado.nome}</span> 👋</p>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-dourado/40 bg-dourado/10 px-3 py-1 text-xs text-dourado">
+          ⚔️ {patente.atual.nome} · {estado.pontos} XP
+        </span>
+      </div>
+      <h1 className="font-title text-3xl text-dourado text-glow mt-2">Suas batalhas</h1>
       <p className="text-cinza/60 text-sm mt-1">Cada vício é uma travessia rumo à liberdade.</p>
 
       {estado.batalhas.length === 0 ? (
