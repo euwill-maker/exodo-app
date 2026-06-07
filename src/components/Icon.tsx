@@ -13,12 +13,11 @@ export type IconName =
   | 'shield'
 
 const PATHS: Record<IconName, ReactElement> = {
-  // corrente se partindo — saída da escravidão
+  // elo de corrente partido ao meio — saída da escravidão
   chains: (
     <>
-      <path d="M10.5 8.5a4 4 0 0 0 0 7" />
-      <path d="M13.5 8.5a4 4 0 0 1 0 7" />
-      <path d="M9 5.5l1.5 2M15 5.5l-1.5 2M9 18.5l1.5-2M15 18.5l-1.5-2" />
+      <path d="M10.8 5.5A5 5 0 0 0 10.8 18" />
+      <path d="M13.2 5.5A5 5 0 0 1 13.2 18" />
     </>
   ),
   // mar aberto — caminho no meio das águas

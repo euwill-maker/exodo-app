@@ -32,10 +32,12 @@ export function App() {
   return (
     <div className="min-h-screen">
       <Landscape />
-      {aba === 'home' && <Home onSOS={() => setMuralha(true)} />}
-      {aba === 'devocional' && <Devocional />}
-      {aba === 'diario' && <Diario />}
-      {aba === 'conquistas' && <Conquistas />}
+      <div key={aba} className="animate-fadeUp">
+        {aba === 'home' && <Home onSOS={() => setMuralha(true)} />}
+        {aba === 'devocional' && <Devocional />}
+        {aba === 'diario' && <Diario />}
+        {aba === 'conquistas' && <Conquistas />}
+      </div>
       <BottomNav ativa={aba} onMudar={setAba} />
     </div>
   )
