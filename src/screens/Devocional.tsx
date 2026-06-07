@@ -73,13 +73,27 @@ export function Devocional() {
   const feito = concluidos.includes(chave)
   const reflexaoSalva = estado.devocional.reflexoes.find((r) => r.chave === chave)?.texto ?? ''
 
+  const total = tema.devocionais.length
+
   return (
     <div className="px-5 pt-6 pb-28 max-w-md mx-auto space-y-5 animate-fadeUp" key={chave}>
       <div className="flex items-center justify-between">
         <button onClick={() => setTemaId(null)} className="text-cinza/70 flex items-center gap-1 text-sm">
           <Icon name="back" size={20} /> {tema.nome}
         </button>
-        <span className="text-cinza/50 text-xs">{indice + 1}/{tema.devocionais.length}</span>
+        <span className="text-cinza/50 text-xs">
+          {indice + 1}/{total} · ~3 min
+        </span>
+      </div>
+
+      {/* barra de progresso do tema */}
+      <div className="flex gap-1">
+        {tema.devocionais.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full ${i < indice ? 'bg-dourado/70' : i === indice ? 'bg-dourado' : 'bg-white/12'}`}
+          />
+        ))}
       </div>
 
       <div className="relative rounded-3xl border border-dourado/20 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-5 text-center shadow-glow-sm">
@@ -88,10 +102,34 @@ export function Devocional() {
         <p className="text-dourado text-sm mt-3 font-semibold">— {d.referencia}</p>
       </div>
 
+      <Secao titulo="Contexto" texto={d.contexto} />
       <Secao titulo="Reflexão" texto={d.reflexao} />
+
+      {/* pergunta para refletir */}
+      <div className="rounded-2xl border border-dourado/25 bg-dourado/[0.07] p-4">
+        <h3 className="font-title text-dourado text-sm uppercase tracking-wide flex items-center gap-2">
+          <Icon name="pray" size={16} /> Para refletir
+        </h3>
+        <p className="text-white/90 mt-1.5 leading-relaxed italic">{d.pergunta}</p>
+      </div>
+
       <Secao titulo="Aplicação" texto={d.aplicacao} />
       <Secao titulo="Oração" texto={d.oracao} />
 
+      {/* versículos de apoio */}
+      <div>
+        <h3 className="font-title text-dourado text-sm uppercase tracking-wide mb-2">Para meditar</h3>
+        <div className="space-y-2">
+          {d.apoio.map((v) => (
+            <div key={v.ref} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+              <p className="font-scripture text-lg italic text-white/90 leading-snug">“{v.texto}”</p>
+              <p className="text-dourado text-xs mt-1 font-semibold">— {v.ref}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* minha reflexão */}
       <div>
         <h3 className="font-title text-dourado text-sm uppercase tracking-wide">Minha reflexão</h3>
         <textarea
@@ -106,13 +144,31 @@ export function Devocional() {
       <button
         onClick={() => {
           concluirDevocional(chave)
-          if (indice < tema.devocionais.length - 1) setIndice(indice + 1)
+          if (indice < total - 1) setIndice(indice + 1)
           else setTemaId(null)
         }}
         className="w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition"
       >
-        {feito ? 'Amém ✓ Próximo' : 'Amém · Concluir'}
+        {indice < total - 1 ? (feito ? 'Concluído ✓ · Próximo' : 'Amém · Próximo') : 'Amém · Concluir jornada'}
       </button>
+
+      {/* navegação anterior/próximo */}
+      <div className="flex justify-between text-sm">
+        <button
+          onClick={() => setIndice((i) => Math.max(0, i - 1))}
+          disabled={indice === 0}
+          className="flex items-center gap-1 text-cinza/60 disabled:opacity-30"
+        >
+          <Icon name="back" size={16} /> Anterior
+        </button>
+        <button
+          onClick={() => setIndice((i) => Math.min(total - 1, i + 1))}
+          disabled={indice === total - 1}
+          className="flex items-center gap-1 text-cinza/60 disabled:opacity-30"
+        >
+          Próximo <span className="rotate-180 inline-flex"><Icon name="back" size={16} /></span>
+        </button>
+      </div>
     </div>
   )
 }
