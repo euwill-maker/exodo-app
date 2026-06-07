@@ -1,16 +1,12 @@
-import type { EstadoApp } from '../types'
+import type { Batalha } from '../types'
 import { diasLivres } from './streak'
 
-export function registrarRecaida(estado: EstadoApp, agora: Date = new Date()): EstadoApp {
-  if (!estado.perfil) return estado
-  const atual = diasLivres(estado.perfil.dataInicio, agora)
+export function registrarRecaidaBatalha(batalha: Batalha, agora: Date = new Date()): Batalha {
+  const atual = diasLivres(batalha.dataInicio, agora)
   return {
-    ...estado,
-    perfil: { ...estado.perfil, dataInicio: agora.toISOString() },
-    progresso: {
-      ...estado.progresso,
-      melhorSequenciaDias: Math.max(estado.progresso.melhorSequenciaDias, atual),
-      vezesQueSeReergueu: estado.progresso.vezesQueSeReergueu + 1,
-    },
+    ...batalha,
+    dataInicio: agora.toISOString(),
+    melhorSequenciaDias: Math.max(batalha.melhorSequenciaDias, atual),
+    vezesQueSeReergueu: batalha.vezesQueSeReergueu + 1,
   }
 }

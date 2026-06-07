@@ -1,17 +1,39 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import type { EstadoApp, Perfil, DiarioEntry } from '../types'
+import type { Batalha, DiarioEntry, EstadoApp, Habito } from '../types'
 import { carregarEstado, salvarEstado, estadoInicial } from '../lib/storage'
-import { registrarRecaida as calcRecaida } from '../lib/relapse'
+import { registrarRecaidaBatalha } from '../lib/relapse'
 import { diasLivres } from '../lib/streak'
 import { conquistasAte } from '../lib/milestones'
 
+export function novoId(): string {
+  try {
+    return crypto.randomUUID()
+  } catch {
+    return 'id-' + Date.now() + '-' + Math.floor(Math.random() * 1e6)
+  }
+}
+
+export type DadosNovaBatalha = Omit<
+  Batalha,
+  'id' | 'dataInicio' | 'melhorSequenciaDias' | 'vezesQueSeReergueu' | 'conquistasDesbloqueadas'
+>
+
 interface Ctx {
   estado: EstadoApp
-  iniciarJornada: (perfil: Perfil) => void
-  registrarRecaida: () => void
+  definirNome: (nome: string) => void
+  criarBatalha: (dados: DadosNovaBatalha) => string
+  removerBatalha: (id: string) => void
+  registrarRecaida: (batalhaId: string) => void
   registrarVitoria: () => void
+  addObjetivo: (batalhaId: string, texto: string) => void
+  toggleObjetivo: (batalhaId: string, objId: string) => void
+  removerObjetivo: (batalhaId: string, objId: string) => void
+  addHabito: (nome: string, icone: string) => void
+  toggleHabito: (habitoId: string, dataISO: string) => void
+  removerHabito: (habitoId: string) => void
   salvarDiario: (entry: DiarioEntry) => void
-  concluirDevocional: (dataISO: string) => void
+  concluirDevocional: (chave: string) => void
+  salvarReflexao: (chave: string, texto: string) => void
   resetar: () => void
 }
 
@@ -24,56 +46,131 @@ export function AppProvider({ children }: { children: ReactNode }) {
     salvarEstado(estado)
   }, [estado])
 
-  // Sincroniza conquistas desbloqueadas com os dias atuais sempre que o estado muda.
+  // Desbloqueia conquistas de cada batalha conforme os dias.
   useEffect(() => {
-    if (!estado.perfil) return
-    const dias = diasLivres(estado.perfil.dataInicio)
-    const ids = conquistasAte(dias).map((c) => c.id)
-    const faltando = ids.filter((id) => !estado.progresso.conquistasDesbloqueadas.includes(id))
-    if (faltando.length) {
-      setEstado((e) => ({
-        ...e,
-        progresso: {
-          ...e.progresso,
-          conquistasDesbloqueadas: [...e.progresso.conquistasDesbloqueadas, ...faltando],
-        },
-      }))
-    }
-  }, [estado.perfil, estado.progresso.conquistasDesbloqueadas])
+    setEstado((e) => {
+      let mudou = false
+      const batalhas = e.batalhas.map((b) => {
+        const dias = diasLivres(b.dataInicio)
+        const ids = conquistasAte(dias).map((c) => c.id)
+        const faltando = ids.filter((id) => !b.conquistasDesbloqueadas.includes(id))
+        if (!faltando.length) return b
+        mudou = true
+        return { ...b, conquistasDesbloqueadas: [...b.conquistasDesbloqueadas, ...faltando] }
+      })
+      return mudou ? { ...e, batalhas } : e
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estado.batalhas.length])
 
-  const iniciarJornada = (perfil: Perfil) => setEstado((e) => ({ ...e, perfil }))
-  const registrarRecaida = () => setEstado((e) => calcRecaida(e))
-  // v1: a vitória na Muralha apenas encerra a sequência de emergência.
-  // Hook para métricas futuras (contagem de vitórias, gatilhos) na v2.
+  const mapBatalha = (id: string, fn: (b: Batalha) => Batalha) =>
+    setEstado((e) => ({ ...e, batalhas: e.batalhas.map((b) => (b.id === id ? fn(b) : b)) }))
+
+  const definirNome = (nome: string) => setEstado((e) => ({ ...e, nome }))
+
+  const criarBatalha = (dados: DadosNovaBatalha) => {
+    const id = novoId()
+    const batalha: Batalha = {
+      ...dados,
+      id,
+      dataInicio: new Date().toISOString(),
+      melhorSequenciaDias: 0,
+      vezesQueSeReergueu: 0,
+      conquistasDesbloqueadas: [],
+    }
+    setEstado((e) => ({ ...e, batalhas: [...e.batalhas, batalha] }))
+    return id
+  }
+
+  const removerBatalha = (id: string) =>
+    setEstado((e) => ({ ...e, batalhas: e.batalhas.filter((b) => b.id !== id) }))
+
+  const registrarRecaida = (batalhaId: string) =>
+    mapBatalha(batalhaId, (b) => registrarRecaidaBatalha(b))
+
   const registrarVitoria = () => {}
+
+  const addObjetivo = (batalhaId: string, texto: string) =>
+    mapBatalha(batalhaId, (b) => ({
+      ...b,
+      objetivos: [...b.objetivos, { id: novoId(), texto, feito: false }],
+    }))
+
+  const toggleObjetivo = (batalhaId: string, objId: string) =>
+    mapBatalha(batalhaId, (b) => ({
+      ...b,
+      objetivos: b.objetivos.map((o) => (o.id === objId ? { ...o, feito: !o.feito } : o)),
+    }))
+
+  const removerObjetivo = (batalhaId: string, objId: string) =>
+    mapBatalha(batalhaId, (b) => ({ ...b, objetivos: b.objetivos.filter((o) => o.id !== objId) }))
+
+  const addHabito = (nome: string, icone: string) =>
+    setEstado((e) => ({
+      ...e,
+      habitos: [...e.habitos, { id: novoId(), nome, icone, diasFeitos: [] }],
+    }))
+
+  const toggleHabito = (habitoId: string, dataISO: string) =>
+    setEstado((e) => ({
+      ...e,
+      habitos: e.habitos.map((h): Habito => {
+        if (h.id !== habitoId) return h
+        const feito = h.diasFeitos.includes(dataISO)
+        return {
+          ...h,
+          diasFeitos: feito
+            ? h.diasFeitos.filter((d) => d !== dataISO)
+            : [...h.diasFeitos, dataISO],
+        }
+      }),
+    }))
+
+  const removerHabito = (habitoId: string) =>
+    setEstado((e) => ({ ...e, habitos: e.habitos.filter((h) => h.id !== habitoId) }))
+
   const salvarDiario = (entry: DiarioEntry) =>
     setEstado((e) => ({
       ...e,
       diario: [entry, ...e.diario.filter((d) => d.data !== entry.data)],
     }))
-  const concluirDevocional = (dataISO: string) =>
+
+  const concluirDevocional = (chave: string) =>
     setEstado((e) =>
-      e.progresso.devocionaisConcluidos.includes(dataISO)
+      e.devocional.concluidos.includes(chave)
         ? e
-        : {
-            ...e,
-            progresso: {
-              ...e.progresso,
-              devocionaisConcluidos: [...e.progresso.devocionaisConcluidos, dataISO],
-            },
-          },
+        : { ...e, devocional: { ...e.devocional, concluidos: [...e.devocional.concluidos, chave] } },
     )
+
+  const salvarReflexao = (chave: string, texto: string) =>
+    setEstado((e) => ({
+      ...e,
+      devocional: {
+        ...e.devocional,
+        reflexoes: [...e.devocional.reflexoes.filter((r) => r.chave !== chave), { chave, texto }],
+      },
+    }))
+
   const resetar = () => setEstado(estadoInicial)
 
   return (
     <AppContext.Provider
       value={{
         estado,
-        iniciarJornada,
+        definirNome,
+        criarBatalha,
+        removerBatalha,
         registrarRecaida,
         registrarVitoria,
+        addObjetivo,
+        toggleObjetivo,
+        removerObjetivo,
+        addHabito,
+        toggleHabito,
+        removerHabito,
         salvarDiario,
         concluirDevocional,
+        salvarReflexao,
         resetar,
       }}
     >

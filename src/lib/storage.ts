@@ -1,19 +1,14 @@
 import localforage from 'localforage'
-import type { EstadoApp, Progresso } from '../types'
+import type { EstadoApp } from '../types'
 
 const KEY = 'exodo:estado'
 
-const progressoVazio: Progresso = {
-  melhorSequenciaDias: 0,
-  vezesQueSeReergueu: 0,
-  conquistasDesbloqueadas: [],
-  devocionaisConcluidos: [],
-}
-
 export const estadoInicial: EstadoApp = {
-  perfil: null,
-  progresso: progressoVazio,
+  nome: null,
+  batalhas: [],
+  habitos: [],
   diario: [],
+  devocional: { concluidos: [], reflexoes: [] },
 }
 
 export function carregarEstado(): EstadoApp {
@@ -30,7 +25,7 @@ export function salvarEstado(estado: EstadoApp): void {
   localStorage.setItem(KEY, JSON.stringify(estado))
 }
 
-// Fotos ficam no IndexedDB (podem ser grandes). Guardamos só os ids no perfil.
+// Fotos ficam no IndexedDB (podem ser grandes). Guardamos só os ids nas batalhas.
 const fotosStore = localforage.createInstance({ name: 'exodo', storeName: 'fotos' })
 
 export async function salvarFoto(id: string, blob: Blob): Promise<void> {

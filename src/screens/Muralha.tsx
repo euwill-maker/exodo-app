@@ -49,10 +49,14 @@ function Btn({ onClick, children }: { onClick: () => void; children: ReactNode }
   )
 }
 
-export function Muralha({ onFechar }: { onFechar: () => void }) {
+export function Muralha({ batalhaId, onFechar }: { batalhaId: string; onFechar: () => void }) {
   const { estado, registrarVitoria } = useApp()
-  const p = estado.perfil!
+  const p = estado.batalhas.find((b) => b.id === batalhaId)
   const [passo, setPasso] = useState(0)
+  if (!p) {
+    onFechar()
+    return null
+  }
   const avancar = () => setPasso((s) => s + 1)
   const vencer = () => {
     registrarVitoria()

@@ -1,21 +1,31 @@
 export type Vicio = string
 
-export interface Perfil {
-  nome: string
+export interface Objetivo {
+  id: string
+  texto: string
+  feito: boolean
+}
+
+export interface Batalha {
+  id: string
   vicio: Vicio
-  tempoDeLuta?: string
   dataInicio: string // ISO date-time da sequência atual
   desafioDias: number // 7|21|40|90|180|365
   declaracao: string
   motivos: string
-  fotoIds: string[] // chaves no IndexedDB
-}
-
-export interface Progresso {
+  fotoIds: string[]
+  objetivos: Objetivo[]
+  compromissoAceito: boolean
   melhorSequenciaDias: number
   vezesQueSeReergueu: number
-  conquistasDesbloqueadas: string[] // ids de conquistas
-  devocionaisConcluidos: string[] // datas ISO (YYYY-MM-DD)
+  conquistasDesbloqueadas: string[]
+}
+
+export interface Habito {
+  id: string
+  nome: string
+  icone: string // nome de ícone (ver Icon.tsx)
+  diasFeitos: string[] // datas YYYY-MM-DD concluídas
 }
 
 export interface DiarioEntry {
@@ -24,6 +34,16 @@ export interface DiarioEntry {
   oQueAconteceu: string
   vitorias: string
   oracao: string
+}
+
+export interface ReflexaoDevocional {
+  chave: string // `${temaId}:${indice}` ou data
+  texto: string
+}
+
+export interface EstadoDevocional {
+  concluidos: string[] // chaves de devocionais concluídos
+  reflexoes: ReflexaoDevocional[]
 }
 
 export interface Fase {
@@ -43,7 +63,9 @@ export interface Conquista {
 }
 
 export interface EstadoApp {
-  perfil: Perfil | null // null = onboarding não feito
-  progresso: Progresso
+  nome: string | null // null = ainda não fez o boas-vindas
+  batalhas: Batalha[]
+  habitos: Habito[]
   diario: DiarioEntry[]
+  devocional: EstadoDevocional
 }

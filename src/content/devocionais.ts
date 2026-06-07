@@ -1,5 +1,4 @@
 export interface Devocional {
-  tema: string
   versiculo: string
   referencia: string
   reflexao: string
@@ -7,72 +6,141 @@ export interface Devocional {
   oracao: string
 }
 
-export const DEVOCIONAIS: Devocional[] = [
+export interface TemaDevocional {
+  id: string
+  nome: string
+  icone: string // nome de ícone (Icon.tsx)
+  descricao: string
+  devocionais: Devocional[]
+}
+
+export const TEMAS_DEVOCIONAIS: TemaDevocional[] = [
   {
-    tema: 'Vencendo a Tentação',
-    versiculo: 'Vigiai e orai, para que não entreis em tentação.',
-    referencia: 'Mateus 26:41',
-    reflexao:
-      'Jesus ensinou que a vigilância é fundamental para vencer as fraquezas da carne. A tentação não é pecado; ceder a ela é. Vigiar é reconhecer os momentos de fraqueza antes que eles cheguem.',
-    aplicacao:
-      'Hoje, identifique um horário ou situação de maior risco e prepare uma resposta: uma oração, um versículo, uma ligação para alguém.',
-    oracao:
-      'Senhor, dá-me olhos vigilantes e um coração firme. Que eu reconheça as armadilhas e corra para Ti antes de cair. Amém.',
+    id: 'libertacao',
+    nome: 'Libertação',
+    icone: 'chains',
+    descricao: 'Sair da escravidão e caminhar para a liberdade.',
+    devocionais: [
+      {
+        versiculo: 'Se o Filho vos libertar, verdadeiramente sereis livres.',
+        referencia: 'João 8:36',
+        reflexao:
+          'A liberdade não é um prêmio distante — é uma promessa. Quem confia em Cristo já está a caminho da Terra Prometida, mesmo entre quedas e recomeços.',
+        aplicacao: 'Escreva uma frase sobre como será a sua vida livre.',
+        oracao: 'Jesus, liberta-me de verdade. Conduz-me à liberdade para a qual me criaste. Amém.',
+      },
+      {
+        versiculo: 'Eis que ponho diante de ti a vida e a morte; escolhe, pois, a vida.',
+        referencia: 'Deuteronômio 30:19',
+        reflexao:
+          'Sair do Egito começou com uma decisão. A liberdade nasce de uma escolha repetida todos os dias.',
+        aplicacao: 'Reafirme hoje a sua Declaração de Liberdade em voz alta.',
+        oracao: 'Pai, eu escolho a vida. Sustenta a minha decisão hoje. Amém.',
+      },
+      {
+        versiculo: 'Permanecei, pois, firmes na liberdade com que Cristo nos libertou.',
+        referencia: 'Gálatas 5:1',
+        reflexao:
+          'Ser livre é uma coisa; permanecer livre é outra. A vigilância diária guarda a liberdade conquistada.',
+        aplicacao: 'Identifique um gatilho de hoje e prepare uma resposta para ele.',
+        oracao: 'Senhor, ajuda-me a permanecer firme e não voltar às correntes. Amém.',
+      },
+    ],
   },
   {
-    tema: 'A Decisão de Sair',
-    versiculo: 'Eis que ponho diante de ti a vida e a morte; escolhe, pois, a vida.',
-    referencia: 'Deuteronômio 30:19',
-    reflexao:
-      'Sair do Egito começou com uma decisão. A liberdade não cai do céu pronta — ela nasce de uma escolha repetida todos os dias.',
-    aplicacao: 'Reafirme hoje a sua Declaração de Liberdade. Leia-a em voz alta.',
-    oracao:
-      'Pai, eu escolho a vida. Escolho a liberdade que vem de Ti. Sustenta a minha decisão hoje. Amém.',
+    id: 'ansiedade',
+    nome: 'Ansiedade',
+    icone: 'waves',
+    descricao: 'Encontrar paz no meio da tempestade.',
+    devocionais: [
+      {
+        versiculo: 'Não andeis ansiosos por coisa alguma... e a paz de Deus guardará o vosso coração.',
+        referencia: 'Filipenses 4:6-7',
+        reflexao:
+          'A ansiedade tenta carregar o amanhã hoje. Deus convida você a entregar, em oração, o peso que não foi feito para carregar sozinho.',
+        aplicacao: 'Escreva uma preocupação e entregue-a a Deus em oração.',
+        oracao: 'Senhor, entrego a Ti a minha ansiedade. Guarda o meu coração na Tua paz. Amém.',
+      },
+      {
+        versiculo: 'Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.',
+        referencia: '1 Pedro 5:7',
+        reflexao:
+          'Você não precisa fingir força. Pode lançar tudo sobre Deus — Ele cuida de você com carinho.',
+        aplicacao: 'Respire fundo 3 vezes e diga: "Deus cuida de mim".',
+        oracao: 'Pai, eu confio que Tu cuidas de mim. Acalma o meu interior. Amém.',
+      },
+      {
+        versiculo: 'Em silêncio e confiança estará a vossa força.',
+        referencia: 'Isaías 30:15',
+        reflexao:
+          'Nem toda batalha se vence agitando-se. Às vezes a maior força está em aquietar-se diante de Deus.',
+        aplicacao: 'Reserve 2 minutos de silêncio para apenas estar com Deus.',
+        oracao: 'Senhor, no silêncio eu Te encontro. Renova as minhas forças. Amém.',
+      },
+    ],
   },
   {
-    tema: 'Força na Fraqueza',
-    versiculo: 'A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza.',
-    referencia: '2 Coríntios 12:9',
-    reflexao:
-      'Você não precisa ser forte o tempo todo. Deus age justamente onde você é fraco. Admitir a fraqueza é abrir espaço para a graça.',
-    aplicacao: 'Entregue a Deus, em oração, a área onde você se sente mais fraco hoje.',
-    oracao: 'Senhor, na minha fraqueza, sê a minha força. Eu me apoio em Ti. Amém.',
+    id: 'pureza',
+    nome: 'Pureza',
+    icone: 'sunrise',
+    descricao: 'Renovar a mente e o coração.',
+    devocionais: [
+      {
+        versiculo: 'Bem-aventurados os limpos de coração, porque verão a Deus.',
+        referencia: 'Mateus 5:8',
+        reflexao:
+          'A pureza não é perfeição — é direção. É manter o coração voltado para Deus, mesmo depois de tropeçar.',
+        aplicacao: 'Peça a Deus para purificar um pensamento recorrente.',
+        oracao: 'Cria em mim, ó Deus, um coração puro. Amém.',
+      },
+      {
+        versiculo: 'Vigiai e orai, para que não entreis em tentação.',
+        referencia: 'Mateus 26:41',
+        reflexao:
+          'A vigilância reconhece a fraqueza antes da queda. Saber a hora do perigo já é metade da vitória.',
+        aplicacao: 'Marque o horário de maior risco e planeje uma ação para ele.',
+        oracao: 'Senhor, dá-me olhos vigilantes e um coração firme. Amém.',
+      },
+      {
+        versiculo: 'Transformai-vos pela renovação da vossa mente.',
+        referencia: 'Romanos 12:2',
+        reflexao:
+          'O vício mora em padrões de pensamento. A liberdade exige trocar pensamentos antigos por verdades novas.',
+        aplicacao: 'Substitua um pensamento negativo por uma verdade bíblica.',
+        oracao: 'Deus, renova a minha mente. Forma em mim o novo. Amém.',
+      },
+    ],
   },
   {
-    tema: 'Renovação da Mente',
-    versiculo: 'Transformai-vos pela renovação da vossa mente.',
-    referencia: 'Romanos 12:2',
-    reflexao:
-      'O vício mora em padrões de pensamento. A liberdade exige trocar pensamentos antigos por verdades novas. Isso é um processo, não um instante.',
-    aplicacao: 'Substitua um pensamento negativo de hoje por uma verdade bíblica.',
-    oracao: 'Deus, renova a minha mente. Tira de mim o velho e forma em mim o novo. Amém.',
-  },
-  {
-    tema: 'Um Dia de Cada Vez',
-    versiculo: 'Não vos inquieteis, pois, pelo dia de amanhã.',
-    referencia: 'Mateus 6:34',
-    reflexao:
-      'A liberdade se constrói hoje. Não carregue o peso de amanhã nem a culpa de ontem. Só existe a batalha de hoje, e ela pode ser vencida.',
-    aplicacao: 'Concentre-se apenas em vencer o dia de hoje.',
-    oracao: 'Pai, dá-me forças para hoje. Amanhã, a Tua misericórdia se renovará. Amém.',
-  },
-  {
-    tema: 'Você Não Está Sozinho',
-    versiculo: 'Não te deixarei, nem te desampararei.',
-    referencia: 'Hebreus 13:5',
-    reflexao:
-      'No deserto, Israel nunca esteve só — a coluna de nuvem e de fogo sempre esteve lá. Você também não caminha sozinho.',
-    aplicacao: 'Lembre-se de uma pessoa de apoio e considere conversar com ela hoje.',
-    oracao: 'Senhor, obrigado porque nunca me abandonas. Caminha comigo hoje. Amém.',
-  },
-  {
-    tema: 'A Liberdade é Possível',
-    versiculo: 'Se o Filho vos libertar, verdadeiramente sereis livres.',
-    referencia: 'João 8:36',
-    reflexao:
-      'A liberdade não é um prêmio distante — é uma promessa. Quem confia em Cristo caminha rumo à Terra Prometida, mesmo entre quedas e recomeços.',
-    aplicacao: 'Imagine como será a sua vida livre. Anote uma frase sobre isso no diário.',
-    oracao:
-      'Jesus, liberta-me de verdade. Conduz-me à liberdade para a qual me criaste. Amém.',
+    id: 'proposito',
+    nome: 'Propósito',
+    icone: 'mountain',
+    descricao: 'Descobrir para que você foi criado.',
+    devocionais: [
+      {
+        versiculo: 'Porque sou eu que conheço os planos que tenho para vós... planos de paz e de um futuro.',
+        referencia: 'Jeremias 29:11',
+        reflexao:
+          'Você não está apenas fugindo de algo — está caminhando para algo. Deus tem um destino para a sua vida.',
+        aplicacao: 'Escreva um sonho que a liberdade vai te permitir realizar.',
+        oracao: 'Pai, mostra-me o propósito para o qual me criaste. Amém.',
+      },
+      {
+        versiculo: 'Posso todas as coisas naquele que me fortalece.',
+        referencia: 'Filipenses 4:13',
+        reflexao:
+          'A força para vencer não vem só de você. Vem de Cristo agindo em você, um dia de cada vez.',
+        aplicacao: 'Diga em voz alta: "Em Cristo, eu venço hoje".',
+        oracao: 'Senhor, em Ti está a minha força. Vence em mim hoje. Amém.',
+      },
+      {
+        versiculo: 'Corramos com perseverança a carreira que nos está proposta.',
+        referencia: 'Hebreus 12:1',
+        reflexao:
+          'A jornada é uma corrida de perseverança, não de velocidade. Cada passo conta, e desistir nunca é o fim.',
+        aplicacao: 'Comemore um pequeno avanço de hoje, por menor que seja.',
+        oracao: 'Deus, dá-me perseverança para correr até o fim. Amém.',
+      },
+    ],
   },
 ]
