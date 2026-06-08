@@ -15,7 +15,7 @@ function Secao({ titulo, texto }: { titulo: string; texto: string }) {
 export function Devocional() {
   const { estado, concluirDia, salvarReflexao } = useApp()
   const dev = estado.devocional
-  const diasConcluidos = dev.diasConcluidos
+  const diasConcluidos = Number(dev.diasConcluidos) || 0
   const hoje = new Date().toISOString().slice(0, 10)
   const jaLeuHoje = dev.ultimaData === hoje
   const terminouTudo = diasConcluidos >= TOTAL_DIAS

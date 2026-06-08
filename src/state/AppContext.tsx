@@ -160,12 +160,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const hoje = new Date().toISOString().slice(0, 10)
       if (e.devocional.ultimaData === hoje) return e // já leu hoje — 1 por dia
       const ontem = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10)
-      const streak = e.devocional.ultimaData === ontem ? e.devocional.streak + 1 : 1
+      const streak = e.devocional.ultimaData === ontem ? (Number(e.devocional.streak) || 0) + 1 : 1
       return {
         ...e,
         devocional: {
           ...e.devocional,
-          diasConcluidos: e.devocional.diasConcluidos + 1,
+          diasConcluidos: (Number(e.devocional.diasConcluidos) || 0) + 1,
           ultimaData: hoje,
           streak,
         },

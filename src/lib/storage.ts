@@ -18,7 +18,23 @@ export function carregarEstado(): EstadoApp {
   try {
     const raw = localStorage.getItem(KEY)
     if (!raw) return estadoInicial
-    return { ...estadoInicial, ...JSON.parse(raw) }
+    const parsed = JSON.parse(raw) as Partial<EstadoApp>
+    // Mescla com os padrões, inclusive o objeto aninhado `devocional`,
+    // para que estados salvos antigos ganhem os campos novos (evita NaN).
+    const dev = parsed.devocional ?? {}
+    return {
+      ...estadoInicial,
+      ...parsed,
+      pontos: Number(parsed.pontos) || 0,
+      vitorias: Number(parsed.vitorias) || 0,
+      devocional: {
+        ...estadoInicial.devocional,
+        ...dev,
+        diasConcluidos: Number(dev.diasConcluidos) || 0,
+        streak: Number(dev.streak) || 0,
+        ultimaData: dev.ultimaData ?? null,
+      },
+    }
   } catch {
     return estadoInicial
   }
