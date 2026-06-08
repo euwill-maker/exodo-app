@@ -1,10 +1,12 @@
 import { useApp } from '../state/AppContext'
 import { diasLivres } from '../lib/streak'
 import { infoPatente } from '../lib/patente'
+import { diasRestantesTrial } from '../lib/acesso'
 import { Icon } from '../components/Icon'
 
-export function Perfil() {
+export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void }) {
   const { estado, resetar, mostrarTutorial } = useApp()
+  const restamTrial = diasRestantesTrial(estado.primeiroAcesso)
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
   const melhor = estado.batalhas.reduce((m, b) => Math.max(m, b.melhorSequenciaDias), 0)
@@ -47,7 +49,32 @@ export function Perfil() {
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-3 gap-3 text-center">
+      {/* assinatura / plano */}
+      <button
+        onClick={onAbrirAssinatura}
+        className="mt-4 w-full rounded-2xl border border-dourado/30 bg-white/[0.03] p-4 text-left flex items-center gap-3 active:scale-[0.99] transition"
+      >
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-dourado/40 bg-dourado/10 text-dourado">
+          <Icon name="medal" size={20} />
+        </span>
+        <div className="flex-1">
+          <div className="font-title text-dourado">
+            {estado.plano === 'vitalicio'
+              ? 'Acesso Vitalício ✓'
+              : estado.plano === 'mensal'
+                ? 'Plano Mensal ativo'
+                : restamTrial > 0
+                  ? `🎁 ${restamTrial} ${restamTrial === 1 ? 'dia' : 'dias'} grátis restantes`
+                  : 'Período grátis encerrado'}
+          </div>
+          <div className="text-cinza/55 text-xs">
+            {estado.plano === 'trial' ? 'Toque para ver os planos e assinar' : 'Toque para gerenciar'}
+          </div>
+        </div>
+        <Icon name="back" size={18} className="rotate-180 text-cinza/50" />
+      </button>
+
+      <div className="mt-4 grid grid-cols-3 gap-3 text-center">
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
           <div className="font-title text-2xl text-dourado">{estado.batalhas.length}</div>
           <div className="text-[10px] text-cinza/60 uppercase tracking-wide">Batalhas</div>

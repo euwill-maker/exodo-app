@@ -12,6 +12,8 @@ export const estadoInicial: EstadoApp = {
   pontos: 0,
   vitorias: 0,
   tutorialVisto: false,
+  primeiroAcesso: '',
+  plano: 'trial',
 }
 
 export function carregarEstado(): EstadoApp {

@@ -10,6 +10,7 @@ import { Habitos } from './screens/Habitos'
 import { Devocional } from './screens/Devocional'
 import { Diario } from './screens/Diario'
 import { Perfil } from './screens/Perfil'
+import { Assinatura } from './screens/Assinatura'
 import { BottomNav, type Aba } from './components/BottomNav'
 import { BotaoBatalha } from './components/BotaoBatalha'
 import { Landscape } from './components/Landscape'
@@ -21,6 +22,7 @@ export function App() {
   const [criando, setCriando] = useState(false)
   const [muralhaAberta, setMuralhaAberta] = useState(false)
   const [muralhaBatalha, setMuralhaBatalha] = useState<string | null>(null)
+  const [assinaturaAberta, setAssinaturaAberta] = useState(false)
 
   const abrirMuralha = (id: string | null) => {
     setMuralhaBatalha(id)
@@ -61,6 +63,15 @@ export function App() {
       </>
     )
 
+  // assinatura / planos (tela cheia)
+  if (assinaturaAberta)
+    return (
+      <>
+        <Landscape />
+        <Assinatura onFechar={() => setAssinaturaAberta(false)} />
+      </>
+    )
+
   // modo batalha (tela cheia)
   if (muralhaAberta)
     return (
@@ -93,7 +104,7 @@ export function App() {
         {aba === 'habitos' && <Habitos />}
         {aba === 'devocional' && <Devocional />}
         {aba === 'diario' && <Diario />}
-        {aba === 'perfil' && <Perfil />}
+        {aba === 'perfil' && <Perfil onAbrirAssinatura={() => setAssinaturaAberta(true)} />}
       </div>
       {estado.batalhas.length > 0 && <BotaoBatalha comNav onClick={() => abrirMuralha(null)} />}
       <BottomNav ativa={aba} onMudar={setAba} />

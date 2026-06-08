@@ -77,4 +77,6 @@ export interface EstadoApp {
   pontos: number // XP acumulado (vitórias no Modo Batalha, etc.)
   vitorias: number // quantas vezes venceu uma tentação no Modo Batalha
   tutorialVisto: boolean // já viu o tutorial de boas-vindas
+  primeiroAcesso: string // ISO date do primeiro uso (base do trial de 7 dias)
+  plano: 'trial' | 'mensal' | 'vitalicio' // plano atual (v1 local; depois vem do servidor)
 }

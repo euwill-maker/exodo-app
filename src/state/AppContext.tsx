@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Batalha, DiarioEntry, EstadoApp, Habito } from '../types'
+import type { Plano } from '../lib/acesso'
 import { carregarEstado, salvarEstado, estadoInicial, apagarFoto } from '../lib/storage'
 import { registrarRecaidaBatalha } from '../lib/relapse'
 import { diasLivres } from '../lib/streak'
@@ -39,6 +40,7 @@ interface Ctx {
   salvarReflexao: (chave: string, texto: string) => void
   marcarTutorialVisto: () => void
   mostrarTutorial: () => void
+  definirPlano: (plano: Plano) => void
   resetar: () => void
 }
 
@@ -50,6 +52,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     salvarEstado(estado)
   }, [estado])
+
+  // marca o primeiro acesso (base do trial de 7 dias)
+  useEffect(() => {
+    if (!estado.primeiroAcesso) {
+      setEstado((e) => (e.primeiroAcesso ? e : { ...e, primeiroAcesso: new Date().toISOString() }))
+    }
+  }, [estado.primeiroAcesso])
 
   // Desbloqueia conquistas de cada batalha conforme os dias.
   useEffect(() => {
@@ -181,6 +190,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       },
     }))
 
+  const definirPlano = (plano: Plano) => setEstado((e) => ({ ...e, plano }))
   const marcarTutorialVisto = () => setEstado((e) => ({ ...e, tutorialVisto: true }))
   const mostrarTutorial = () => setEstado((e) => ({ ...e, tutorialVisto: false }))
   const resetar = () => setEstado(estadoInicial)
@@ -207,6 +217,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         salvarReflexao,
         marcarTutorialVisto,
         mostrarTutorial,
+        definirPlano,
         resetar,
       }}
     >
