@@ -20,7 +20,7 @@ function Check() {
 }
 
 export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => void; bloqueio?: boolean }) {
-  const { userId, trialEnds } = useApp()
+  const { userId, trialEnds, signOut } = useApp()
   const restam = diasRestantesData(trialEnds)
 
   const assinar = (plano: 'mensal' | 'vitalicio') => abrirCheckout(plano, userId)
@@ -90,8 +90,14 @@ export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => voi
       </div>
 
       <p className="text-center text-cinza/40 text-xs mt-5">
-        🔒 Pagamento seguro via Mercado Pago · Pix, boleto ou cartão
+        🔒 Pagamento seguro via Stripe · Pix ou cartão
       </p>
+
+      {bloqueio && (
+        <button onClick={() => void signOut()} className="mt-5 w-full text-center text-cinza/50 text-sm underline">
+          Sair da conta
+        </button>
+      )}
     </div>
   )
 }

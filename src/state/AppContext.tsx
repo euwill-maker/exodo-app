@@ -43,6 +43,9 @@ interface Ctx {
   signUp: (email: string, senha: string, nome: string) => Promise<{ erro?: string }>
   signIn: (email: string, senha: string) => Promise<{ erro?: string }>
   signOut: () => Promise<void>
+  recuperandoSenha: boolean
+  resetarSenha: (email: string) => Promise<{ erro?: string }>
+  atualizarSenha: (senha: string) => Promise<{ erro?: string }>
   definirNome: (nome: string) => void
   criarBatalha: (dados: DadosNovaBatalha) => string
   removerBatalha: (id: string) => void
@@ -73,6 +76,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [authLoading, setAuthLoading] = useState(true)
   const [plano, setPlano] = useState<Plano>('trial')
   const [trialEnds, setTrialEnds] = useState<string | null>(null)
+  const [recuperandoSenha, setRecuperandoSenha] = useState(false)
   const nuvemCarregadaPara = useRef<string | null>(null)
 
   const recarregarPerfil = async () => {
@@ -96,8 +100,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setUserId(data.session?.user?.id ?? null)
       setAuthLoading(false)
     })
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((evt, session) => {
       setUserId(session?.user?.id ?? null)
+      if (evt === 'PASSWORD_RECOVERY') setRecuperandoSenha(true)
     })
     return () => {
       ativo = false
@@ -193,6 +198,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (error) return { erro: traduzErro(error.message) }
     return {}
   }
+  const resetarSenha = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: 'https://euwill-maker.github.io/exodo-app/',
+    })
+    if (error) return { erro: traduzErro(error.message) }
+    return {}
+  }
+  const atualizarSenha = async (senha: string) => {
+    const { error } = await supabase.auth.updateUser({ password: senha })
+    if (error) return { erro: traduzErro(error.message) }
+    setRecuperandoSenha(false)
+    return {}
+  }
+
   const signOut = async () => {
     await supabase.auth.signOut()
     nuvemCarregadaPara.current = null
@@ -329,6 +348,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         signUp,
         signIn,
         signOut,
+        recuperandoSenha,
+        resetarSenha,
+        atualizarSenha,
         definirNome,
         criarBatalha,
         removerBatalha,

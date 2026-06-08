@@ -19,7 +19,7 @@ export function diasRestantesData(fimISO: string | null, agora: Date = new Date(
   return Math.max(0, Math.ceil(ms / MS_DIA))
 }
 
-// Acesso liberado se for assinante (mensal/vitalício) ou ainda dentro do trial.
+// Acesso liberado se for assinante (mensal/vitalício) ou ainda dentro do trial (local).
 export function acessoLiberado(
   plano: Plano,
   primeiroAcesso: string,
@@ -27,4 +27,14 @@ export function acessoLiberado(
 ): boolean {
   if (plano === 'mensal' || plano === 'vitalicio') return true
   return diasRestantesTrial(primeiroAcesso, agora) > 0
+}
+
+// Versão que usa o fim do trial vindo do SERVIDOR (à prova de fraude).
+export function acessoLiberadoServidor(
+  plano: string,
+  trialEnds: string | null,
+  agora: Date = new Date(),
+): boolean {
+  if (plano === 'mensal' || plano === 'vitalicio') return true
+  return diasRestantesData(trialEnds, agora) > 0
 }

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useApp } from './state/AppContext'
 import { Auth } from './screens/Auth'
+import { RedefinirSenha } from './screens/RedefinirSenha'
 import { Boasvindas } from './screens/Boasvindas'
+import { acessoLiberadoServidor } from './lib/acesso'
 import { Tutorial } from './screens/Tutorial'
 import { Painel } from './screens/Painel'
 import { NovaBatalha } from './screens/NovaBatalha'
@@ -17,7 +19,7 @@ import { BotaoBatalha } from './components/BotaoBatalha'
 import { Landscape } from './components/Landscape'
 
 export function App() {
-  const { estado, userId, authLoading } = useApp()
+  const { estado, userId, authLoading, recuperandoSenha, plano, trialEnds } = useApp()
   const [aba, setAba] = useState<Aba>('inicio')
   const [batalhaAberta, setBatalhaAberta] = useState<string | null>(null)
   const [criando, setCriando] = useState(false)
@@ -41,12 +43,30 @@ export function App() {
       </>
     )
 
+  // redefinir senha (após clicar no link de recuperação por e-mail)
+  if (recuperandoSenha)
+    return (
+      <>
+        <Landscape />
+        <RedefinirSenha />
+      </>
+    )
+
   // login obrigatório
   if (!userId)
     return (
       <>
         <Landscape />
         <Auth />
+      </>
+    )
+
+  // trava do trial: trial expirado e sem assinatura → tela de planos (paywall)
+  if (trialEnds && !acessoLiberadoServidor(plano, trialEnds))
+    return (
+      <>
+        <Landscape />
+        <Assinatura bloqueio onFechar={() => {}} />
       </>
     )
 
