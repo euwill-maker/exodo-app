@@ -554,6 +554,18 @@ footer{position:relative;border-top:1px solid var(--line2);padding:50px 0 44px;c
 </div>
 
 <script>
+/* Contador de visitas (anônimo, 1x por sessão) — mede quem chega na landing. */
+(function(){
+  try{
+    if(sessionStorage.getItem('exodo:visita-site')) return;
+    sessionStorage.setItem('exodo:visita-site','1');
+    var KEY="sb_publishable_rpf1NCfscMs5v9tNy32TXQ_rY2cHsKV";
+    fetch("https://hucfvysilcsdgzsxgmbd.supabase.co/rest/v1/rpc/registrar_visita",{
+      method:"POST",headers:{"apikey":KEY,"Authorization":"Bearer "+KEY,"Content-Type":"application/json"},body:"{}"
+    }).catch(function(){});
+  }catch(e){}
+})();
+
 /* URL do app (PWA) publicado — os botões abrem o app direto. */
 const APP_URL = "https://exodo.app.br/";
 /* Opcional: endpoint de captura (Google Apps Script) pra receber os e-mails. */
