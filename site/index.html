@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Êxodo — Da escravidão para a liberdade</title>
+<meta name="description" content="O app cristão que te ajuda a vencer vícios pela fé, disciplina e novos hábitos. Contador de dias livre, devocional, Muralha da Tentação e uma jornada do Egito à Terra Prometida.">
+<meta name="theme-color" content="#241A12">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Êxodo — Da escravidão para a liberdade">
+<meta property="og:description" content="Vença vícios com fé, disciplina e novos hábitos. Sua jornada do Egito à Terra Prometida começa hoje.">
+<link rel="icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#211710;--bg2:#2E2318;--line:#4a3a26;--line2:#33281b;
+  --gold:#C9A24B;--gold-l:#E6C879;--gold-d:#9e7b33;
+  --terra:#B5532A;--turq:#2C7DA0;
+  --txt:#F5ECD8;--txt2:#d8c7a8;--txt3:#a18f72;--green:#6fa84b;
+  --display:'Montserrat',sans-serif;--body:'Inter',system-ui,sans-serif;--scripture:'Cormorant Garamond',Georgia,serif;--maxw:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.section{padding:96px 0;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-l);background:rgba(201,162,75,.1);border:1px solid rgba(201,162,75,.34);padding:7px 14px;border-radius:30px;margin-bottom:22px}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:glow 1.6s ease infinite}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.h-sec{font-size:clamp(30px,5vw,50px);margin-bottom:18px}
+.lead{color:var(--txt2);font-size:clamp(15px,2vw,18px);max-width:640px}
+.center{text-align:center;margin-left:auto;margin-right:auto}
+.grad-text{background:linear-gradient(90deg,#E6C879,#C9A24B,#E6C879);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradmove 4s linear infinite}
+
+.btn{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:none;font-family:var(--body);font-weight:700;font-size:15px;padding:14px 28px;border-radius:12px;transition:transform .15s,box-shadow .2s}
+.btn-primary{background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:#241A12;box-shadow:0 8px 24px -8px rgba(201,162,75,.7)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px -8px rgba(201,162,75,.85)}
+.btn-primary.pulse{animation:pulse 2.6s ease infinite}
+.btn-ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+
+@keyframes gradmove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px -8px rgba(201,162,75,.7),0 0 0 0 rgba(201,162,75,.5)}50%{box-shadow:0 8px 24px -8px rgba(201,162,75,.7),0 0 0 16px rgba(201,162,75,0)}}
+@keyframes glow{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:.9}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1;transform:none;transition:none}}
+
+header{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);background:rgba(33,23,16,.6);border-bottom:1px solid transparent;transition:.3s}
+header.scrolled{border-bottom-color:var(--line2);background:rgba(33,23,16,.9)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:20px;color:var(--gold)}
+.brand img{width:30px;height:30px}
+.nav-links{display:flex;gap:28px;font-size:14px;color:var(--txt2)}
+.nav-links a:hover{color:#fff}
+.nav .btn{padding:10px 20px;font-size:14px}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* fundo estrelado + serra (igual ao app) */
+.skybg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sky-glow{position:absolute;top:-12rem;left:50%;transform:translateX(-50%);width:46rem;height:32rem;border-radius:50%;background:rgba(201,162,75,.12);filter:blur(120px)}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 4s ease-in-out infinite}
+.ridge{position:absolute;bottom:0;left:0;width:100%}
+body>*:not(.skybg){position:relative;z-index:1}
+
+.hero{position:relative;padding:150px 0 90px;overflow:hidden}
+.hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.hero h1{font-size:clamp(40px,6.4vw,68px);margin-bottom:22px}
+.hero .lead{font-size:clamp(16px,2.2vw,20px);margin-bottom:30px}
+.hero-cta{display:flex;gap:13px;flex-wrap:wrap}
+.hero-trust{margin-top:26px;display:flex;align-items:center;gap:10px;color:var(--txt3);font-size:13px}
+.hero-verse{margin-top:26px;font-family:var(--scripture);font-style:italic;font-size:20px;color:var(--txt2)}
+.hero-verse b{color:var(--gold);font-style:normal;font-family:var(--body);font-size:13px;font-weight:600}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:44px}.hero{padding:124px 0 56px}.phone{width:236px}}
+
+/* mockup do celular */
+.phone{position:relative;justify-self:center;width:264px;max-width:68vw}
+.phone-glow{position:absolute;inset:-6%;border-radius:48px;background:linear-gradient(150deg,var(--gold),var(--gold-l),var(--gold));background-size:200% 200%;animation:gradmove 5s linear infinite;filter:blur(34px);opacity:.4;z-index:0}
+.phone-frame{position:relative;z-index:1;border:8px solid #15100a;border-radius:38px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.9);animation:float 6.5s ease-in-out infinite;background:#241A12;aspect-ratio:9/19.3}
+.phone-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.phone-badge{position:absolute;z-index:2;background:rgba(46,35,24,.92);backdrop-filter:blur(8px);border:1px solid rgba(201,162,75,.45);border-radius:14px;padding:11px 15px;box-shadow:0 16px 34px -12px rgba(0,0,0,.75)}
+.phone-badge .v{font-family:var(--display);font-weight:800;font-size:20px;color:var(--gold)}
+.phone-badge .l{font-size:10px;color:var(--txt3);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.pb1{left:-26px;top:64px;animation:float 6.5s ease-in-out infinite 1s}
+.pb2{right:-22px;bottom:96px;animation:float 6.5s ease-in-out infinite .4s}
+@media(max-width:520px){.pb1{left:-8px}.pb2{right:-8px}}
+
+/* PROBLEMA */
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+.prob-card{border:1px solid var(--line);border-radius:16px;background:var(--bg2);padding:22px 18px;transition:transform .25s,border-color .25s}
+.prob-card:hover{transform:translateY(-5px);border-color:rgba(201,162,75,.5)}
+.prob-card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;color:var(--gold-l);background:rgba(201,162,75,.1);border:1px solid rgba(201,162,75,.28)}
+.prob-card .ic svg{width:24px;height:24px}
+.prob-card .v{font-weight:600;font-size:15.5px;line-height:1.35;color:#fff}
+.prob-punch{margin-top:40px;font-family:var(--display);font-weight:700;font-size:clamp(22px,3.4vw,32px);line-height:1.2}
+@media(max-width:820px){.prob-grid{grid-template-columns:1fr 1fr;gap:14px}}
+
+/* JORNADA (5 fases) */
+.jornada{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:54px;position:relative}
+.jornada::before{content:'';position:absolute;left:6%;right:6%;top:34px;height:2px;background:linear-gradient(90deg,var(--gold),rgba(201,162,75,.15));z-index:0}
+.fase{position:relative;z-index:1;text-align:center}
+.fase .node{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:var(--bg2);border:1px solid rgba(201,162,75,.4);box-shadow:0 0 24px -8px rgba(201,162,75,.5)}
+.fase .node svg{width:30px;height:30px}
+.fase h3{font-size:15px;margin-bottom:4px}
+.fase .d{font-size:11.5px;color:var(--txt3);font-family:var(--body)}
+.fase p{font-size:12.5px;color:var(--txt2);margin-top:8px;line-height:1.4}
+@media(max-width:820px){.jornada{grid-template-columns:1fr 1fr 1fr}.jornada::before{display:none}}
+@media(max-width:520px){.jornada{grid-template-columns:1fr 1fr}}
+
+/* MÉTODO */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:54px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:16px;padding:30px;background:var(--bg2);overflow:hidden}
+.step::before{counter-increment:s;content:"0" counter(s);position:absolute;top:14px;right:18px;font-family:var(--display);font-weight:800;font-size:54px;color:transparent;-webkit-text-stroke:1px rgba(201,162,75,.22)}
+.step .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;color:var(--gold);margin-bottom:18px;background:rgba(201,162,75,.12);border:1px solid rgba(201,162,75,.3)}
+.step .ic svg{width:24px;height:24px}
+.step h3{font-size:21px;margin-bottom:9px}
+.step p{color:var(--txt2);font-size:14.5px}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+
+/* APP / FUNCIONALIDADES */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+.card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--bg2);transition:transform .2s,border-color .2s,background .2s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);border-color:rgba(201,162,75,.5);background:#34281b}
+.card .ic{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;color:var(--gold-l);margin-bottom:16px;background:rgba(201,162,75,.13);border:1px solid rgba(201,162,75,.3)}
+.card .ic svg{width:24px;height:24px}
+.card h3{font-size:18px;margin-bottom:9px}
+.card p{font-size:13.5px;color:var(--txt2)}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.cards{grid-template-columns:1fr 1fr;gap:12px}.card{padding:18px 15px}.card p{font-size:13px}}
+
+/* MURALHA / 3 ARMAS */
+.mur{display:grid;grid-template-columns:.82fr 1.18fr;gap:48px;align-items:center;margin-top:50px}
+.mur-phone{position:relative;justify-self:center;width:240px;max-width:64vw}
+.mur-phone .phone-frame{animation:float 7s ease-in-out infinite}
+.mur-list{display:flex;flex-direction:column;gap:16px}
+.mur-arma{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--ac);border-radius:16px;background:var(--bg2);padding:20px;transition:transform .2s,box-shadow .2s}
+.mur-arma:hover{transform:translateX(5px);box-shadow:-6px 0 24px -12px var(--ac)}
+.mur-ic{width:50px;height:50px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;color:var(--ac);background:rgba(0,0,0,.22);border:1px solid var(--ac)}
+.mur-ic svg{width:26px;height:26px}
+.mur-arma h3{font-size:19px;margin-bottom:6px}
+.mur-arma p{font-size:14px;color:var(--txt2)}
+@media(max-width:820px){.mur{grid-template-columns:1fr;gap:30px}.mur-list{gap:13px}.mur-arma{padding:17px}}
+
+/* BASE BÍBLICA */
+.biblia{display:grid;grid-template-columns:.95fr 1.05fr;gap:54px;align-items:center}
+.biblia-quotes{display:flex;flex-direction:column;gap:18px}
+.bq{border-left:3px solid var(--gold);padding:6px 0 6px 20px}
+.bq p{font-family:var(--scripture);font-style:italic;font-size:22px;line-height:1.4;color:#fff}
+.bq span{color:var(--gold);font-size:13px;font-weight:600}
+.biblia-img{position:relative;justify-self:center;width:240px;max-width:64vw}
+.biblia-img .phone-frame{animation:float 7s ease-in-out infinite}
+@media(max-width:820px){.biblia{grid-template-columns:1fr;gap:40px}}
+
+/* CONQUISTAS */
+.ach{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:50px}
+.ach-item{border:1px solid var(--line);border-radius:14px;background:var(--bg2);padding:18px 10px;text-align:center}
+.ach-item .m{width:42px;height:42px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;color:#241A12;background:linear-gradient(180deg,var(--gold-l),var(--gold-d))}
+.ach-item .m svg{width:22px;height:22px}
+.ach-item .n{font-size:12.5px;font-weight:600;line-height:1.2}
+.ach-item .dd{font-size:10.5px;color:var(--txt3);margin-top:3px}
+@media(max-width:820px){.ach{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:420px){.ach{grid-template-columns:repeat(2,1fr)}}
+
+/* PREÇO */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px;margin:54px auto 0}
+.plan{border:1px solid var(--line);border-radius:20px;background:var(--bg2);padding:34px 30px;position:relative}
+.plan.pro{border-color:rgba(201,162,75,.45);background:linear-gradient(180deg,rgba(201,162,75,.1),var(--bg2));box-shadow:0 30px 70px -30px rgba(201,162,75,.4)}
+.plan-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:#241A12;padding:6px 16px;border-radius:20px;white-space:nowrap}
+.plan h3{font-size:22px;margin-bottom:4px}
+.plan .pp{font-size:13px;color:var(--txt3);margin-bottom:18px}
+.plan .price{font-family:var(--display);font-weight:800;font-size:38px;margin-bottom:18px}
+.plan .price span{font-size:14px;color:var(--txt3);font-weight:600}
+.plan-list{display:grid;gap:11px;margin-bottom:24px}
+.plan-list .b{display:flex;gap:10px;font-size:14px;color:var(--txt2);align-items:flex-start}
+.plan-list .b .ck{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:grid;place-items:center;color:var(--green);background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.35)}
+.plan-list .b .ck svg{width:12px;height:12px}
+.plan .btn{width:100%;justify-content:center}
+@media(max-width:680px){.plans{grid-template-columns:1fr;max-width:420px}}
+.price-single{max-width:460px;margin:54px auto 0}
+.price-single .plan{padding:42px 34px;text-align:center}
+.price-single .plan-list{text-align:left;max-width:360px;margin:0 auto 26px}
+.price-single .price{font-size:44px}
+
+/* FAQ */
+.faq{max-width:760px;margin:50px auto 0}
+.qa{border:1px solid var(--line);border-radius:13px;margin-bottom:12px;background:var(--bg2);overflow:hidden}
+.qa summary{cursor:pointer;list-style:none;padding:20px 22px;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary .plus{color:var(--gold-l);font-size:22px;transition:transform .25s;flex-shrink:0}
+.qa[open] summary .plus{transform:rotate(45deg)}
+.qa .ans{padding:0 22px 22px;color:var(--txt2);font-size:14.5px}
+
+/* FINAL */
+.final{position:relative;text-align:center;padding:54px 20px}
+.final h2{font-size:clamp(30px,5vw,52px);margin-bottom:16px}
+.final .lead{margin:0 auto 30px}
+.finalsec{position:relative;overflow:hidden;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+
+footer{position:relative;border-top:1px solid var(--line2);padding:50px 0 44px;color:var(--txt3);font-size:13px;text-align:center}
+.foot-badge{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;border:1px solid rgba(201,162,75,.4);background:rgba(201,162,75,.1);margin-bottom:14px}
+.foot-badge img{width:26px;height:26px}
+.foot-brand{font-size:14px;color:var(--txt2);margin-bottom:6px}
+.foot-brand b{color:var(--gold);font-family:var(--display)}
+.ig{display:inline-flex;align-items:center;gap:8px;color:var(--txt2);font-weight:600;margin-top:10px}
+.ig:hover{color:var(--gold-l)}
+.ig svg{width:20px;height:20px}
+
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(6,12,20,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{width:100%;max-width:440px;border:1px solid var(--line2);border-radius:20px;padding:34px;position:relative;background:linear-gradient(180deg,#34281b,#241A12);box-shadow:0 40px 100px -30px rgba(0,0,0,.9);animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.modal .x{position:absolute;top:16px;right:18px;cursor:pointer;color:var(--txt3);font-size:22px;line-height:1}
+.modal .x:hover{color:#fff}
+.modal h3{font-size:24px;margin-bottom:8px}
+.modal p.sub{color:var(--txt2);font-size:14px;margin-bottom:24px}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--txt2)}
+.field input{width:100%;padding:13px 15px;border-radius:11px;border:1px solid var(--line);background:#0b1626;color:#fff;font-family:var(--body);font-size:15px;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--gold)}
+.field input.err{border-color:#ff5f56}
+.modal .btn{width:100%;justify-content:center;margin-top:6px}
+.modal .fine{text-align:center;color:var(--txt3);font-size:12px;margin-top:14px;line-height:1.4}
+.modal .ok{text-align:center;color:var(--green);font-weight:600;padding:14px 0}
+.hp-field{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- FUNDO ESTRELADO + SERRA -->
+<div class="skybg" aria-hidden="true">
+  <div class="sky-glow"></div>
+  <div id="stars"></div>
+  <svg class="ridge" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" fill="none" style="height:42vh;min-height:240px">
+    <path d="M0 200 L150 140 L290 188 L430 110 L560 178 L700 120 L840 184 L980 124 L1130 178 L1290 132 L1440 184 L1440 320 L0 320 Z" fill="#2E2318" opacity="0.55"/>
+    <path d="M0 262 L170 212 L320 262 L470 204 L620 258 L780 212 L940 266 L1100 210 L1270 258 L1440 218 L1440 320 L0 320 Z" fill="#1A120B"/>
+  </svg>
+</div>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <div class="brand"><img src="icon.svg" alt=""> Êxodo</div>
+    <nav class="nav-links">
+      <a href="#jornada">A jornada</a>
+      <a href="#app">O app</a>
+      <a href="#biblia">Por que Êxodo</a>
+      <a href="#preco">Planos</a>
+    </nav>
+    <button class="btn btn-primary" data-cta>Baixar grátis</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow reveal"><span class="dot"></span> Vença vícios com fé</div>
+      <h1 class="reveal d1">Da escravidão<br>para a <span class="grad-text">liberdade.</span></h1>
+      <p class="lead reveal d2">O <strong>Êxodo</strong> é o app que te acompanha na travessia para vencer vícios — com a força de Deus, disciplina diária e novos hábitos. Um dia de cada vez, do Egito à Terra Prometida.</p>
+      <div class="hero-cta reveal d3">
+        <button class="btn btn-primary pulse" data-cta>Começar minha jornada →</button>
+        <a href="#app" class="btn btn-ghost">Ver como funciona</a>
+      </div>
+      <p class="hero-verse reveal d4">“Se o Filho vos libertar, verdadeiramente sereis livres.” <b>João 8:36</b></p>
+    </div>
+    <div class="phone reveal d2">
+      <div class="phone-glow"></div>
+      <div class="phone-frame"><img src="app-detalhe.png" alt="Tela do app Êxodo mostrando o contador de dias e a jornada"></div>
+      <div class="phone-badge pb1"><div class="v">23</div><div class="l">dias livres</div></div>
+      <div class="phone-badge pb2"><div class="v">🕊️</div><div class="l">em liberdade</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="section" id="problema">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot"></span> Soa familiar?</div>
+    <h2 class="h-sec reveal d1">Você já tentou parar.<br>E sozinho, <span class="grad-text">recaiu.</span></h2>
+    <p class="lead reveal d2">A maioria tenta vencer o vício só na força de vontade — e o ciclo se repete. O Êxodo trabalha o espiritual, o emocional e o comportamental ao mesmo tempo.</p>
+    <div class="prob-grid">
+      <div class="prob-card reveal d1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.8 5.5A5 5 0 0 0 10.8 18"/><path d="M13.2 5.5A5 5 0 0 1 13.2 18"/></svg></div>
+        <div class="v">Preso num ciclo que parece não ter fim</div>
+      </div>
+      <div class="prob-card reveal d2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></div>
+        <div class="v">Culpa e vergonha depois de cada recaída</div>
+      </div>
+      <div class="prob-card reveal d3">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M7.5 18a4.5 4.5 0 0 1 9 0"/><path d="M12 7.5V5M6.5 9.5L5 8M17.5 9.5L19 8"/></svg></div>
+        <div class="v">Vontade que aperta e ninguém pra te segurar</div>
+      </div>
+      <div class="prob-card reveal d4">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19c0-8 6-14 14-14 0 8-6 14-14 14z"/><path d="M3 19c3-4 7-7 11-9"/></svg></div>
+        <div class="v">Quer mudar, mas não sabe por onde começar</div>
+      </div>
+    </div>
+    <p class="prob-punch reveal">Não falta força de vontade. Falta um <span class="grad-text">caminho claro</span> — e Deus do seu lado.</p>
+  </div>
+</section>
+
+<!-- JORNADA -->
+<section class="section" id="jornada">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal"><span class="dot"></span> Sua travessia</div>
+      <h2 class="h-sec reveal d1">Uma jornada do <span class="grad-text">Egito à Terra Prometida.</span></h2>
+      <p class="lead center reveal d2">Assim como Israel saiu da escravidão, você atravessa fases até viver a liberdade. O app te mostra exatamente onde você está.</p>
+    </div>
+    <div class="jornada">
+      <div class="fase reveal d1">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.8 5.5A5 5 0 0 0 10.8 18"/><path d="M13.2 5.5A5 5 0 0 1 13.2 18"/></svg></div>
+        <h3>Egito</h3><div class="d">0–7 dias</div><p>A decisão de sair da escravidão.</p>
+      </div>
+      <div class="fase reveal d1">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4C6 8.5 6 15.5 10.5 20"/><path d="M13.5 4C18 8.5 18 15.5 13.5 20"/><path d="M3.5 17.5q2-2 4 0t4 0 4 0 4 0"/></svg></div>
+        <h3>Mar Vermelho</h3><div class="d">7–30 dias</div><p>As primeiras vitórias. Não volte atrás.</p>
+      </div>
+      <div class="fase reveal d2">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16c3-5 6-5 9-1s5 3 9-2"/><path d="M3 20c4-3 7-3 10 0s6 1 8-1"/></svg></div>
+        <h3>Deserto</h3><div class="d">30–90 dias</div><p>A transformação acontece aqui.</p>
+      </div>
+      <div class="fase reveal d3">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19l6-11 4 7 3-4 5 8z"/><circle cx="17" cy="6" r="1.4"/></svg></div>
+        <h3>Monte Sinai</h3><div class="d">90–180 dias</div><p>Sua mente é renovada.</p>
+      </div>
+      <div class="fase reveal d4">
+        <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M7.5 18a4.5 4.5 0 0 1 9 0"/><path d="M12 7.5V5M6.5 9.5L5 8M17.5 9.5L19 8"/></svg></div>
+        <h3>Terra Prometida</h3><div class="d">180+ dias</div><p>Você não é mais escravo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section class="section" id="metodo">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal"><span class="dot"></span> Como funciona</div>
+      <h2 class="h-sec reveal d1">Simples. Diário.<br><span class="grad-text">Do seu lado todo dia.</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div>
+        <h3>1. Decida sair</h3>
+        <p>Escolha a batalha, assine seu pacto de compromisso e escreva sua Declaração de Liberdade.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19C5 11 11 5 19 5c0 8-6 14-14 14z"/><path d="M4 19c3-4 7-7 11-9"/></svg></div>
+        <h3>2. Caminhe diariamente</h3>
+        <p>Devocional, novos hábitos e a Muralha da Tentação pra te socorrer na hora da fraqueza.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M7.5 18a4.5 4.5 0 0 1 9 0"/><path d="M12 7.5V5"/></svg></div>
+        <h3>3. Viva livre</h3>
+        <p>Acompanhe seu progresso, desbloqueie conquistas e alcance a Terra Prometida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP / FUNCIONALIDADES -->
+<section class="section" id="app">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal"><span class="dot"></span> O que tem no app</div>
+      <h2 class="h-sec reveal d1">Tudo pra te ajudar a <span class="grad-text">vencer todo dia.</span></h2>
+    </div>
+    <div class="cards">
+      <div class="card reveal d1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Contador & Jornada</h3><p>Veja seus dias livres crescerem e acompanhe sua fase: Egito, Mar Vermelho, Deserto, Sinai, Terra Prometida.</p></div>
+      <div class="card reveal d2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div><h3>Muralha da Tentação</h3><p>Botão de emergência com 3 modos de socorro pra você vencer a vontade na hora exata da crise.</p></div>
+      <div class="card reveal d3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5.5v12c3-1 6-.5 8 1 2-1.5 5-2 8-1v-12c-3-1-6-.5-8 1z"/><path d="M12 6.5v12"/></svg></div><h3>Devocional diário</h3><p>Jornadas por tema (Libertação, Ansiedade, Pureza, Propósito) com versículo, reflexão e oração.</p></div>
+      <div class="card reveal d1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 11 11 5 19 5c0 8-6 14-14 14z"/><path d="M5 19c3-4 7-7 11-9"/></svg></div><h3>Hábitos saudáveis</h3><p>Crie micro-hábitos (beber água, orar, ler a Bíblia) e mantenha a sequência todos os dias.</p></div>
+      <div class="card reveal d2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg></div><h3>Plano & objetivos</h3><p>Defina metas concretas pra cada batalha e marque suas conquistas no caminho.</p></div>
+      <div class="card reveal d3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 11.5l2 2 4-4"/></svg></div><h3>Pacto de compromisso</h3><p>Assine um compromisso diante de Deus — o primeiro passo que muda tudo de verdade.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MURALHA DA TENTAÇÃO -->
+<section class="section" id="muralha">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal" style="color:#ff8a7a;background:rgba(220,38,38,.12);border-color:rgba(220,38,38,.4)"><span class="dot" style="background:#ef4444"></span> Socorro na hora da crise</div>
+      <h2 class="h-sec reveal d1">Quando a tentação ataca,<br>você tem <span class="grad-text">3 defesas.</span></h2>
+      <p class="lead center reveal d2">Um toque no botão de emergência e você escolhe como quer ser socorrido naquele momento.</p>
+    </div>
+    <div class="mur">
+      <div class="mur-phone reveal d1">
+        <div class="phone-glow"></div>
+        <div class="phone-frame"><img src="app-modobatalha.png" alt="Tela Modo Batalha do app Êxodo com as 3 defesas"></div>
+      </div>
+      <div class="mur-list">
+        <div class="mur-arma reveal d1" style="--ac:#C9A24B">
+          <div class="mur-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div>
+          <div><h3>Armadura de Deus</h3><p>Baseado em Efésios 6, você "veste" cada peça — o Escudo da Fé, a Espada do Espírito — com versículos e afirmações até estar de pé e vitorioso.</p></div>
+        </div>
+        <div class="mur-arma reveal d2" style="--ac:#2C7DA0">
+          <div class="mur-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4C6 8.5 6 15.5 10.5 20"/><path d="M13.5 4C18 8.5 18 15.5 13.5 20"/><path d="M3.5 17.5q2-2 4 0t4 0 4 0 4 0"/></svg></div>
+          <div><h3>Surfe a Onda</h3><p>A vontade é uma onda que sobe e passa. Um cronômetro com respiração guiada te mostra a tentação perdendo força em tempo real.</p></div>
+        </div>
+        <div class="mur-arma reveal d3" style="--ac:#B5532A">
+          <div class="mur-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2.5 3.5 5 5.5 5 9a5 5 0 0 1-10 0c0-1.6.7-2.8 1.7-3.8.4 1.2 1.1 1.8 2 1.8C12.2 8.5 11 6 12 3z"/></svg></div>
+          <div><h3>Sala de Guerra</h3><p>Clamor e oração, suas fotos e motivos em destaque, um louvor pra ouvir e o botão pra chamar reforço de um irmão na fé.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE ÊXODO / BASE BÍBLICA -->
+<section class="section" id="biblia">
+  <div class="wrap biblia">
+    <div class="reveal d1">
+      <div class="eyebrow"><span class="dot"></span> Por que Êxodo</div>
+      <h2 class="h-sec">A verdadeira libertação vem de <span class="grad-text">dentro.</span></h2>
+      <p class="lead" style="margin-bottom:26px">O nome carrega a história mais poderosa da Bíblia: um povo saindo da escravidão rumo à liberdade. O Êxodo não te trata como alguém quebrado — e sim como alguém em jornada de transformação.</p>
+      <div class="biblia-quotes">
+        <div class="bq"><p>“Conhecereis a verdade, e a verdade vos libertará.”</p><span>João 8:32</span></div>
+        <div class="bq"><p>“Posso todas as coisas naquele que me fortalece.”</p><span>Filipenses 4:13</span></div>
+        <div class="bq"><p>“Transformai-vos pela renovação da vossa mente.”</p><span>Romanos 12:2</span></div>
+      </div>
+    </div>
+    <div class="biblia-img reveal d2">
+      <div class="phone-glow"></div>
+      <div class="phone-frame"><img src="app-devocional.png" alt="Tela de devocional do app Êxodo"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONQUISTAS -->
+<section class="section" id="conquistas">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal"><span class="dot"></span> Sua motivação</div>
+      <h2 class="h-sec reveal d1">Conquistas que você vai <span class="grad-text">desbloquear.</span></h2>
+      <p class="lead center reveal d2">Cada marco vencido é uma medalha — e uma prova de que a liberdade é possível.</p>
+    </div>
+    <div class="ach">
+      <div class="ach-item reveal d1"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Primeiro Passo</div><div class="dd">1 dia</div></div>
+      <div class="ach-item reveal d1"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Travessia Iniciada</div><div class="dd">7 dias</div></div>
+      <div class="ach-item reveal d2"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Mar Vermelho</div><div class="dd">30 dias</div></div>
+      <div class="ach-item reveal d2"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Sobrevivente do Deserto</div><div class="dd">90 dias</div></div>
+      <div class="ach-item reveal d3"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Monte Sinai</div><div class="dd">180 dias</div></div>
+      <div class="ach-item reveal d3"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 6 3-6"/><circle cx="12" cy="15" r="5"/></svg></div><div class="n">Terra Prometida</div><div class="dd">365 dias</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANOS -->
+<section class="section" id="preco">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal"><span class="dot"></span> Planos</div>
+      <h2 class="h-sec reveal d1">Escolha o seu <span class="grad-text">caminho para a liberdade.</span></h2>
+      <p class="lead center reveal d2">Comece com 7 dias grátis. Acesso total a tudo, sem compromisso.</p>
+    </div>
+    <div class="plans">
+      <div class="plan reveal d1">
+        <div class="plan-ribbon">✨ 7 dias grátis</div>
+        <h3>Mensal</h3>
+        <div class="pp">Comece grátis, continue por menos de R$ 0,33/dia</div>
+        <div class="price">R$ 9,90 <span>/mês</span></div>
+        <div class="pp" style="margin-top:-8px;margin-bottom:18px">após os 7 dias grátis · cancele quando quiser</div>
+        <div class="plan-list">
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Acesso completo a todo o app</div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Modo Batalha, devocionais e hábitos</div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Batalhas ilimitadas e conquistas</div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Novidades incluídas todo mês</div>
+        </div>
+        <button class="btn btn-ghost" data-cta>Começar 7 dias grátis</button>
+      </div>
+      <div class="plan pro reveal d2">
+        <div class="plan-ribbon">⭐ Melhor valor · pague uma vez</div>
+        <h3>Vitalício</h3>
+        <div class="pp">Pague uma vez, use para sempre</div>
+        <div class="price">R$ 97 <span>uma vez</span></div>
+        <div class="pp" style="margin-top:-8px;margin-bottom:18px">acesso para sempre · sem mensalidade</div>
+        <div class="plan-list">
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <strong>Tudo do plano mensal, para sempre</strong></div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Sem mensalidade — nunca mais paga</div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Todas as novidades futuras inclusas</div>
+          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> A escolha de quem decidiu vencer de vez</div>
+        </div>
+        <button class="btn btn-primary pulse" data-cta>Garantir acesso vitalício →</button>
+      </div>
+    </div>
+    <p class="center reveal" style="color:var(--txt3);font-size:12.5px;margin-top:20px">🔒 Pagamento seguro · 7 dias de garantia</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="center"><div class="eyebrow reveal"><span class="dot"></span> Dúvidas</div><h2 class="h-sec reveal d1">Perguntas <span class="grad-text">frequentes.</span></h2></div>
+    <div class="faq">
+      <details class="qa reveal"><summary>Quanto custa o Êxodo? <span class="plus">+</span></summary><div class="ans">Você começa com <strong>7 dias grátis</strong> e acesso total a tudo. Depois, você escolhe: <strong>R$ 9,90 por mês</strong> (cancele quando quiser) ou <strong>R$ 97 uma única vez</strong> para ter acesso vitalício, sem nunca mais pagar mensalidade.</div></details>
+      <details class="qa reveal"><summary>Funciona pra qualquer vício? <span class="plus">+</span></summary><div class="ans">Sim. Pornografia, álcool, cigarro, drogas, apostas, redes sociais, ansiedade, procrastinação e mais. Você pode acompanhar várias batalhas ao mesmo tempo.</div></details>
+      <details class="qa reveal"><summary>Meus dados ficam privados? <span class="plus">+</span></summary><div class="ans">Totalmente. No app os seus dados ficam salvos apenas no seu aparelho — algo íntimo como sua jornada não precisa sair do seu celular.</div></details>
+      <details class="qa reveal"><summary>Preciso instalar pela loja de apps? <span class="plus">+</span></summary><div class="ans">Não. O Êxodo é um app web (PWA): você abre o link e instala direto na tela inicial do celular, como um app normal — sem loja, sem espera.</div></details>
+      <details class="qa reveal"><summary>E se eu recair? <span class="plus">+</span></summary><div class="ans">Sem condenação. O Êxodo guarda sua melhor sequência e celebra cada recomeço. Levantar faz parte da travessia — Deus continua com você.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section finalsec">
+  <div class="wrap">
+    <div class="final reveal">
+      <div class="eyebrow"><span class="dot"></span> Sua decisão</div>
+      <h2>Sua jornada para a liberdade <span class="grad-text">começa hoje.</span></h2>
+      <p class="lead center">Deus não te chamou para viver acorrentado. Dê o primeiro passo — saia do Egito agora.</p>
+      <button class="btn btn-primary pulse" data-cta>Começar minha jornada →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-badge"><img src="icon.svg" alt=""></div>
+    <div class="foot-brand"><b>Êxodo</b> · Da escravidão para a liberdade</div>
+    <div>“Deus não te chamou para viver acorrentado.”</div>
+    <div style="margin-top:14px;font-size:13px">
+      <a href="termos.html" style="color:var(--txt2)">Termos de Uso</a>
+      &nbsp;·&nbsp;
+      <a href="privacidade.html" style="color:var(--txt2)">Política de Privacidade</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <span class="x" id="modalX">×</span>
+    <div id="modalContent">
+      <h3>Comece sua travessia 🕊️</h3>
+      <p class="sub">Deixe seu contato e te avisamos assim que o Êxodo estiver disponível pra você baixar.</p>
+      <form id="leadForm" novalidate>
+        <div class="field"><label>Seu nome</label><input type="text" name="nome" placeholder="Como podemos te chamar?" required></div>
+        <div class="field"><label>Seu melhor e-mail</label><input type="email" name="email" placeholder="voce@email.com" required></div>
+        <input type="text" name="empresa_site" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn btn-primary">Quero ser avisado →</button>
+        <p class="fine">🔒 Sem spam. Só pra te avisar do lançamento.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+/* URL do app (PWA) publicado — os botões abrem o app direto. */
+const APP_URL = "https://exodo.app.br/";
+/* Opcional: endpoint de captura (Google Apps Script) pra receber os e-mails. */
+const LEADS_ENDPOINT = "";
+
+function enviarLead(d){
+  if(!LEADS_ENDPOINT) return;
+  let fr = document.getElementById('leadsink');
+  if(!fr){ fr=document.createElement('iframe'); fr.name='leadsink'; fr.id='leadsink'; fr.style.display='none'; document.body.appendChild(fr); }
+  const f=document.createElement('form'); f.method='POST'; f.action=LEADS_ENDPOINT; f.target='leadsink';
+  for(const k in d){ const i=document.createElement('input'); i.type='hidden'; i.name=k; i.value=d[k]; f.appendChild(i); }
+  document.body.appendChild(f); f.submit(); setTimeout(()=>f.remove(),1500);
+}
+
+/* estrelas */
+(function(){
+  const box=document.getElementById('stars'); if(!box) return;
+  let html='';
+  for(let i=0;i<46;i++){
+    const x=(i*37%100), y=(i*53%62), s=(i%3)+1, d=(i%5)*0.7, o=0.3+(i%4)*0.15;
+    html+=`<span class="star" style="left:${x}%;top:${y}%;width:${s}px;height:${s}px;opacity:${o};animation-delay:${d}s"></span>`;
+  }
+  box.innerHTML=html;
+})();
+
+const hdr = document.getElementById('hdr');
+addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 10));
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const modal = document.getElementById('modal');
+function openModal(){
+  if(APP_URL){ window.location.href = APP_URL; return; }
+  modal.classList.add('open'); document.body.style.overflow='hidden'; setTimeout(()=>modal.querySelector('input')?.focus(),120);
+}
+function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+document.querySelectorAll('[data-cta]').forEach(b => b.addEventListener('click', openModal));
+document.getElementById('modalX').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+const form = document.getElementById('leadForm');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const data = new FormData(form);
+  if ((data.get('empresa_site')||'').trim()) return; // honeypot
+  let ok = true;
+  form.querySelectorAll('input:not(.hp-field)').forEach(i => {
+    const valid = i.value.trim() && (i.type!=='email' || /\S+@\S+\.\S+/.test(i.value));
+    i.classList.toggle('err', !valid);
+    if (!valid) ok = false;
+  });
+  if (!ok) return;
+  try { enviarLead({ nome:(data.get('nome')||'').trim(), email:(data.get('email')||'').trim(), origem:'Êxodo Landing' }); } catch(err){}
+  document.getElementById('modalContent').innerHTML =
+    '<h3>Recebido! 🙏</h3><p class="ok">Sua vaga está guardada. Te avisamos assim que o Êxodo abrir as portas. Que Deus te fortaleça na sua travessia!</p><button class="btn btn-primary" style="width:100%;justify-content:center" onclick="document.getElementById(\'modal\').classList.remove(\'open\');document.body.style.overflow=\'\'">Fechar</button>';
+});
+
+/* tilt nos cards */
+(function(){
+  if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.card, .step, .prob-card').forEach(card => {
+    card.addEventListener('mousemove', (ev) => {
+      const r = card.getBoundingClientRect();
+      const rx = ((ev.clientY - r.top)/r.height - .5) * -5;
+      const ry = ((ev.clientX - r.left)/r.width - .5) * 5;
+      card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+})();
+</script>
+</body>
+</html>
