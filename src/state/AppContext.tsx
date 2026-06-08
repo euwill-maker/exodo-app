@@ -7,7 +7,7 @@ import { diasLivres } from '../lib/streak'
 import { conquistasAte } from '../lib/milestones'
 import { PONTOS_POR_VITORIA } from '../lib/patente'
 import { supabase } from '../lib/supabase'
-import { carregarNuvem, salvarNuvem } from '../lib/cloud'
+import { carregarNuvem, salvarNuvem, carregarPerfil } from '../lib/cloud'
 
 export function novoId(): string {
   try {
@@ -37,6 +37,9 @@ interface Ctx {
   estado: EstadoApp
   userId: string | null
   authLoading: boolean
+  plano: Plano
+  trialEnds: string | null
+  recarregarPerfil: () => Promise<void>
   signUp: (email: string, senha: string, nome: string) => Promise<{ erro?: string }>
   signIn: (email: string, senha: string) => Promise<{ erro?: string }>
   signOut: () => Promise<void>
@@ -68,7 +71,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<EstadoApp>(() => carregarEstado())
   const [userId, setUserId] = useState<string | null>(null)
   const [authLoading, setAuthLoading] = useState(true)
+  const [plano, setPlano] = useState<Plano>('trial')
+  const [trialEnds, setTrialEnds] = useState<string | null>(null)
   const nuvemCarregadaPara = useRef<string | null>(null)
+
+  const recarregarPerfil = async () => {
+    if (!userId) return
+    const p = await carregarPerfil(userId)
+    if (p) {
+      setPlano((p.plano as Plano) ?? 'trial')
+      setTrialEnds(p.trial_ends)
+    }
+  }
 
   useEffect(() => {
     salvarEstado(estado)
@@ -102,6 +116,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       } else {
         await salvarNuvem(userId, estado)
       }
+      const perfil = await carregarPerfil(userId)
+      if (perfil) {
+        setPlano((perfil.plano as Plano) ?? 'trial')
+        setTrialEnds(perfil.trial_ends)
+      }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
@@ -122,15 +141,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [estado.primeiroAcesso])
 
-  // retorno do checkout do Stripe (?pago=mensal|vitalicio) — libera o plano
-  // (otimista; a confirmação segura via webhook entra na próxima etapa)
+  // retorno do checkout do Stripe (?pago=...) — confere o plano no servidor
+  // (o webhook atualiza a tabela protegida; aqui só fazemos o app reagir).
   useEffect(() => {
     const pago = new URLSearchParams(window.location.search).get('pago')
-    if (pago === 'mensal' || pago === 'vitalicio') {
-      setEstado((e) => ({ ...e, plano: pago }))
-      window.history.replaceState({}, '', window.location.pathname)
+    if (!pago || !userId) return
+    window.history.replaceState({}, '', window.location.pathname)
+    let tentativas = 0
+    const tick = async () => {
+      tentativas++
+      const p = await carregarPerfil(userId)
+      if (p && p.plano !== 'trial') {
+        setPlano(p.plano as Plano)
+        setTrialEnds(p.trial_ends)
+        return
+      }
+      if (tentativas < 8) setTimeout(tick, 2000)
     }
-  }, [])
+    void tick()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   // Desbloqueia conquistas de cada batalha conforme os dias.
   useEffect(() => {
@@ -167,6 +197,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut()
     nuvemCarregadaPara.current = null
     setEstado(estadoInicial)
+    setPlano('trial')
+    setTrialEnds(null)
     setUserId(null)
   }
 
@@ -291,6 +323,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         estado,
         userId,
         authLoading,
+        plano,
+        trialEnds,
+        recarregarPerfil,
         signUp,
         signIn,
         signOut,

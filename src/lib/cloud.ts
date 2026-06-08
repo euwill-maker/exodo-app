@@ -12,6 +12,19 @@ export async function carregarNuvem(userId: string): Promise<EstadoApp | null> {
   return data.data as EstadoApp
 }
 
+// Lê o perfil protegido (plano + fim do trial) — definido pelo servidor/webhook.
+export async function carregarPerfil(
+  userId: string,
+): Promise<{ plano: string; trial_ends: string | null } | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('plano, trial_ends')
+    .eq('id', userId)
+    .maybeSingle()
+  if (error || !data) return null
+  return data as { plano: string; trial_ends: string | null }
+}
+
 // Salva (upsert) o estado do usuário na nuvem.
 export async function salvarNuvem(userId: string, estado: EstadoApp): Promise<void> {
   await supabase.from('estados').upsert({

@@ -1,12 +1,12 @@
 import { useApp } from '../state/AppContext'
 import { diasLivres } from '../lib/streak'
 import { infoPatente } from '../lib/patente'
-import { diasRestantesTrial } from '../lib/acesso'
+import { diasRestantesData } from '../lib/acesso'
 import { Icon } from '../components/Icon'
 
 export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void }) {
-  const { estado, resetar, mostrarTutorial, signOut } = useApp()
-  const restamTrial = diasRestantesTrial(estado.primeiroAcesso)
+  const { estado, resetar, mostrarTutorial, signOut, plano, trialEnds } = useApp()
+  const restamTrial = diasRestantesData(trialEnds)
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
   const melhor = estado.batalhas.reduce((m, b) => Math.max(m, b.melhorSequenciaDias), 0)
@@ -59,16 +59,16 @@ export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void })
         </span>
         <div className="flex-1">
           <div className="font-title text-dourado">
-            {estado.plano === 'vitalicio'
+            {plano === 'vitalicio'
               ? 'Acesso Vitalício ✓'
-              : estado.plano === 'mensal'
+              : plano === 'mensal'
                 ? 'Plano Mensal ativo'
                 : restamTrial > 0
                   ? `🎁 ${restamTrial} ${restamTrial === 1 ? 'dia' : 'dias'} grátis restantes`
                   : 'Período grátis encerrado'}
           </div>
           <div className="text-cinza/55 text-xs">
-            {estado.plano === 'trial' ? 'Toque para ver os planos e assinar' : 'Toque para gerenciar'}
+            {plano === 'trial' ? 'Toque para ver os planos e assinar' : 'Toque para gerenciar'}
           </div>
         </div>
         <Icon name="back" size={18} className="rotate-180 text-cinza/50" />

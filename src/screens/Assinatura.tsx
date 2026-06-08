@@ -1,5 +1,5 @@
 import { useApp } from '../state/AppContext'
-import { diasRestantesTrial } from '../lib/acesso'
+import { diasRestantesData } from '../lib/acesso'
 import { abrirCheckout } from '../lib/stripe'
 import { Icon } from '../components/Icon'
 
@@ -20,8 +20,8 @@ function Check() {
 }
 
 export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => void; bloqueio?: boolean }) {
-  const { estado, userId } = useApp()
-  const restam = diasRestantesTrial(estado.primeiroAcesso)
+  const { userId, trialEnds } = useApp()
+  const restam = diasRestantesData(trialEnds)
 
   const assinar = (plano: 'mensal' | 'vitalicio') => abrirCheckout(plano, userId)
 

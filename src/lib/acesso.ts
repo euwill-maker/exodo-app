@@ -12,6 +12,13 @@ export function diasRestantesTrial(primeiroAcesso: string, agora: Date = new Dat
   return Math.max(0, Math.ceil(ms / MS_DIA))
 }
 
+// Dias restantes até uma data-fim (ex.: fim do trial vindo do servidor).
+export function diasRestantesData(fimISO: string | null, agora: Date = new Date()): number {
+  if (!fimISO) return 0
+  const ms = new Date(fimISO).getTime() - agora.getTime()
+  return Math.max(0, Math.ceil(ms / MS_DIA))
+}
+
 // Acesso liberado se for assinante (mensal/vitalício) ou ainda dentro do trial.
 export function acessoLiberado(
   plano: Plano,
