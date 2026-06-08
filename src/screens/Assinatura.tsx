@@ -1,5 +1,6 @@
 import { useApp } from '../state/AppContext'
 import { diasRestantesTrial } from '../lib/acesso'
+import { abrirCheckout } from '../lib/stripe'
 import { Icon } from '../components/Icon'
 
 const BENEFICIOS = [
@@ -19,19 +20,10 @@ function Check() {
 }
 
 export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => void; bloqueio?: boolean }) {
-  const { estado, definirPlano } = useApp()
+  const { estado, userId } = useApp()
   const restam = diasRestantesTrial(estado.primeiroAcesso)
 
-  // Placeholder até o Mercado Pago estar ativo (Fase 4).
-  const assinar = (plano: 'mensal' | 'vitalicio') => {
-    const ok = confirm(
-      `Pagamento via Mercado Pago será ativado em breve.\n\n(Modo teste) Deseja simular a assinatura ${plano === 'mensal' ? 'Mensal' : 'Vitalícia'} agora?`,
-    )
-    if (ok) {
-      definirPlano(plano)
-      onFechar()
-    }
-  }
+  const assinar = (plano: 'mensal' | 'vitalicio') => abrirCheckout(plano, userId)
 
   return (
     <div className="min-h-screen px-5 py-8 max-w-md mx-auto animate-fadeUp">

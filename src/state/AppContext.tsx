@@ -122,6 +122,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [estado.primeiroAcesso])
 
+  // retorno do checkout do Stripe (?pago=mensal|vitalicio) — libera o plano
+  // (otimista; a confirmação segura via webhook entra na próxima etapa)
+  useEffect(() => {
+    const pago = new URLSearchParams(window.location.search).get('pago')
+    if (pago === 'mensal' || pago === 'vitalicio') {
+      setEstado((e) => ({ ...e, plano: pago }))
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [])
+
   // Desbloqueia conquistas de cada batalha conforme os dias.
   useEffect(() => {
     setEstado((e) => {
