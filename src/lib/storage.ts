@@ -21,7 +21,7 @@ export function carregarEstado(): EstadoApp {
     const parsed = JSON.parse(raw) as Partial<EstadoApp>
     // Mescla com os padrões, inclusive o objeto aninhado `devocional`,
     // para que estados salvos antigos ganhem os campos novos (evita NaN).
-    const dev = parsed.devocional ?? {}
+    const dev = (parsed.devocional ?? {}) as Partial<EstadoApp['devocional']>
     return {
       ...estadoInicial,
       ...parsed,
