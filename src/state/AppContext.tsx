@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import type { Batalha, DiarioEntry, EstadoApp, Habito } from '../types'
 import type { Plano } from '../lib/acesso'
 import { carregarEstado, salvarEstado, estadoInicial, apagarFoto } from '../lib/storage'
@@ -6,6 +6,8 @@ import { registrarRecaidaBatalha } from '../lib/relapse'
 import { diasLivres } from '../lib/streak'
 import { conquistasAte } from '../lib/milestones'
 import { PONTOS_POR_VITORIA } from '../lib/patente'
+import { supabase } from '../lib/supabase'
+import { carregarNuvem, salvarNuvem } from '../lib/cloud'
 
 export function novoId(): string {
   try {
@@ -15,6 +17,17 @@ export function novoId(): string {
   }
 }
 
+function traduzErro(msg: string): string {
+  const m = msg.toLowerCase()
+  if (m.includes('invalid login')) return 'E-mail ou senha incorretos.'
+  if (m.includes('already registered') || m.includes('already been registered'))
+    return 'Este e-mail já tem conta. Tente entrar.'
+  if (m.includes('password') && m.includes('6')) return 'A senha precisa ter ao menos 6 caracteres.'
+  if (m.includes('email') && m.includes('confirm')) return 'Confirme seu e-mail para entrar.'
+  if (m.includes('rate limit')) return 'Muitas tentativas. Aguarde um instante.'
+  return msg
+}
+
 export type DadosNovaBatalha = Omit<
   Batalha,
   'id' | 'dataInicio' | 'melhorSequenciaDias' | 'vezesQueSeReergueu' | 'conquistasDesbloqueadas'
@@ -22,6 +35,11 @@ export type DadosNovaBatalha = Omit<
 
 interface Ctx {
   estado: EstadoApp
+  userId: string | null
+  authLoading: boolean
+  signUp: (email: string, senha: string, nome: string) => Promise<{ erro?: string }>
+  signIn: (email: string, senha: string) => Promise<{ erro?: string }>
+  signOut: () => Promise<void>
   definirNome: (nome: string) => void
   criarBatalha: (dados: DadosNovaBatalha) => string
   removerBatalha: (id: string) => void
@@ -48,10 +66,54 @@ const AppContext = createContext<Ctx | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<EstadoApp>(() => carregarEstado())
+  const [userId, setUserId] = useState<string | null>(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const nuvemCarregadaPara = useRef<string | null>(null)
 
   useEffect(() => {
     salvarEstado(estado)
   }, [estado])
+
+  // sessão do Supabase
+  useEffect(() => {
+    let ativo = true
+    supabase.auth.getSession().then(({ data }) => {
+      if (!ativo) return
+      setUserId(data.session?.user?.id ?? null)
+      setAuthLoading(false)
+    })
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUserId(session?.user?.id ?? null)
+    })
+    return () => {
+      ativo = false
+      sub.subscription.unsubscribe()
+    }
+  }, [])
+
+  // ao logar: carrega o estado da nuvem (ou semeia a nuvem com o estado local)
+  useEffect(() => {
+    if (!userId || nuvemCarregadaPara.current === userId) return
+    nuvemCarregadaPara.current = userId
+    ;(async () => {
+      const nuvem = await carregarNuvem(userId)
+      if (nuvem && nuvem.nome) {
+        setEstado({ ...estadoInicial, ...nuvem })
+      } else {
+        await salvarNuvem(userId, estado)
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
+
+  // salva o estado na nuvem (debounce) quando logado
+  useEffect(() => {
+    if (!userId) return
+    const t = setTimeout(() => {
+      void salvarNuvem(userId, estado)
+    }, 800)
+    return () => clearTimeout(t)
+  }, [estado, userId])
 
   // marca o primeiro acesso (base do trial de 7 dias)
   useEffect(() => {
@@ -79,6 +141,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const mapBatalha = (id: string, fn: (b: Batalha) => Batalha) =>
     setEstado((e) => ({ ...e, batalhas: e.batalhas.map((b) => (b.id === id ? fn(b) : b)) }))
+
+  const signUp = async (email: string, senha: string, nome: string) => {
+    const { error } = await supabase.auth.signUp({ email: email.trim(), password: senha })
+    if (error) return { erro: traduzErro(error.message) }
+    if (nome.trim()) setEstado((e) => ({ ...e, nome: nome.trim() }))
+    return {}
+  }
+  const signIn = async (email: string, senha: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: senha })
+    if (error) return { erro: traduzErro(error.message) }
+    return {}
+  }
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    nuvemCarregadaPara.current = null
+    setEstado(estadoInicial)
+    setUserId(null)
+  }
 
   const definirNome = (nome: string) => setEstado((e) => ({ ...e, nome }))
 
@@ -199,6 +279,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     <AppContext.Provider
       value={{
         estado,
+        userId,
+        authLoading,
+        signUp,
+        signIn,
+        signOut,
         definirNome,
         criarBatalha,
         removerBatalha,

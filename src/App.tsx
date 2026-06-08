@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useApp } from './state/AppContext'
+import { Auth } from './screens/Auth'
 import { Boasvindas } from './screens/Boasvindas'
 import { Tutorial } from './screens/Tutorial'
 import { Painel } from './screens/Painel'
@@ -16,7 +17,7 @@ import { BotaoBatalha } from './components/BotaoBatalha'
 import { Landscape } from './components/Landscape'
 
 export function App() {
-  const { estado } = useApp()
+  const { estado, userId, authLoading } = useApp()
   const [aba, setAba] = useState<Aba>('inicio')
   const [batalhaAberta, setBatalhaAberta] = useState<string | null>(null)
   const [criando, setCriando] = useState(false)
@@ -28,6 +29,26 @@ export function App() {
     setMuralhaBatalha(id)
     setMuralhaAberta(true)
   }
+
+  // carregando sessão
+  if (authLoading)
+    return (
+      <>
+        <Landscape />
+        <div className="min-h-screen flex items-center justify-center">
+          <span className="font-title text-5xl font-extrabold text-dourado text-glow animate-pulse">Ê</span>
+        </div>
+      </>
+    )
+
+  // login obrigatório
+  if (!userId)
+    return (
+      <>
+        <Landscape />
+        <Auth />
+      </>
+    )
 
   // boas-vindas (nome ainda não definido)
   if (!estado.nome)

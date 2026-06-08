@@ -5,7 +5,7 @@ import { diasRestantesTrial } from '../lib/acesso'
 import { Icon } from '../components/Icon'
 
 export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void }) {
-  const { estado, resetar, mostrarTutorial } = useApp()
+  const { estado, resetar, mostrarTutorial, signOut } = useApp()
   const restamTrial = diasRestantesTrial(estado.primeiroAcesso)
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
@@ -101,6 +101,13 @@ export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void })
         className="mt-10 w-full rounded-xl border border-white/15 py-3 text-cinza/80 text-sm"
       >
         Rever tutorial
+      </button>
+
+      <button
+        onClick={() => void signOut()}
+        className="mt-3 w-full rounded-xl border border-white/15 py-3 text-cinza/80 text-sm"
+      >
+        Sair da conta
       </button>
 
       <button
