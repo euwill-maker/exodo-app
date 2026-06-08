@@ -6,7 +6,11 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
   apiVersion: '2024-06-20',
   httpClient: Stripe.createFetchHttpClient(),
 })
-const whSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!
+// Aceita webhook de produção (live) e de teste (mantém os dois funcionando).
+const whSecrets = [
+  Deno.env.get('STRIPE_WEBHOOK_SECRET'),
+  Deno.env.get('STRIPE_WEBHOOK_SECRET_TEST'),
+].filter((s): s is string => !!s)
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
@@ -15,12 +19,16 @@ const supabase = createClient(
 Deno.serve(async (req) => {
   const sig = req.headers.get('stripe-signature')
   const body = await req.text()
-  let event: Stripe.Event
-  try {
-    event = await stripe.webhooks.constructEventAsync(body, sig!, whSecret)
-  } catch (e) {
-    return new Response('assinatura inválida: ' + (e as Error).message, { status: 400 })
+  let event: Stripe.Event | null = null
+  for (const sec of whSecrets) {
+    try {
+      event = await stripe.webhooks.constructEventAsync(body, sig!, sec)
+      break
+    } catch {
+      /* tenta o próximo segredo */
+    }
   }
+  if (!event) return new Response('assinatura inválida', { status: 400 })
 
   try {
     if (event.type === 'checkout.session.completed') {

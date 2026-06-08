@@ -1,15 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#0D1B2A"/>
-  <!-- horizonte iluminado -->
-  <circle cx="256" cy="300" r="150" fill="#15263b"/>
-  <path d="M106 300 Q256 250 406 300" stroke="#D4AF37" stroke-width="6" fill="none" opacity="0.5"/>
-  <!-- Ê dourado -->
-  <g fill="#D4AF37">
-    <rect x="180" y="150" width="40" height="212" rx="8"/>
-    <rect x="180" y="150" width="150" height="40" rx="8"/>
-    <rect x="180" y="236" width="120" height="38" rx="8"/>
-    <rect x="180" y="322" width="150" height="40" rx="8"/>
-    <!-- acento circunflexo -->
-    <path d="M210 118 L233 96 L256 118 L240 118 L233 110 L226 118 Z"/>
+  <defs>
+    <clipPath id="rounded"><rect width="512" height="512" rx="112"/></clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2c2014"/>
+      <stop offset="1" stop-color="#160e07"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="46%" r="50%">
+      <stop offset="0" stop-color="#C9A24B" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#C9A24B" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#C9A24B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0D77B"/>
+      <stop offset="1" stop-color="#C9A24B"/>
+    </linearGradient>
+  </defs>
+
+  <g clip-path="url(#rounded)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <!-- brilho do amanhecer -->
+    <rect width="512" height="512" fill="url(#glow)"/>
+
+    <!-- raios -->
+    <g stroke="#D8B559" stroke-width="9" stroke-linecap="round" opacity="0.85">
+      <line x1="256" y1="92" x2="256" y2="132"/>
+      <line x1="170" y1="120" x2="192" y2="150"/>
+      <line x1="342" y1="120" x2="320" y2="150"/>
+      <line x1="120" y1="186" x2="152" y2="204"/>
+      <line x1="392" y1="186" x2="360" y2="204"/>
+    </g>
+
+    <!-- sol -->
+    <circle cx="256" cy="250" r="62" fill="url(#sun)"/>
+
+    <!-- dunas (sol nascendo atrás) -->
+    <path d="M0 300 C 110 250, 190 320, 300 290 C 380 268, 440 300, 512 282 L512 512 L0 512 Z" fill="#241a10"/>
+    <path d="M0 360 C 120 320, 230 380, 330 350 C 410 327, 470 360, 512 345 L512 512 L0 512 Z" fill="#180f08"/>
+
+    <!-- caminho dourado rumo ao sol -->
+    <path d="M256 470 L292 372 L268 318" fill="none" stroke="#C9A24B" stroke-width="7"
+          stroke-linecap="round" stroke-dasharray="2 16" opacity="0.85"/>
+    <path d="M256 470 L220 372 L244 318" fill="none" stroke="#C9A24B" stroke-width="7"
+          stroke-linecap="round" stroke-dasharray="2 16" opacity="0.55"/>
   </g>
 </svg>

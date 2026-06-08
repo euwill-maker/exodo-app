@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useApp } from '../state/AppContext'
 import { Mood } from '../components/Mood'
+import { analisarGatilhos } from '../lib/gatilhos'
 
 const EMOJI: Record<string, string> = {
   Forte: '💪',
@@ -75,6 +76,7 @@ export function Diario() {
     if (d.humor) humorContagem[d.humor] = (humorContagem[d.humor] ?? 0) + 1
   })
   const humorTop = Object.entries(humorContagem).sort((a, b) => b[1] - a[1])[0]?.[0]
+  const mapa = analisarGatilhos(estado.diario)
 
   return (
     <div className="px-5 pt-10 pb-28 max-w-md mx-auto space-y-5 animate-fadeUp">
@@ -171,6 +173,50 @@ export function Diario() {
       >
         {salvo ? '✓ Salvo no diário' : existente ? 'Atualizar registro de hoje' : 'Salvar no diário'}
       </button>
+
+      {/* mapa de gatilhos */}
+      {mapa.totalRegistros >= 3 && (
+        <div className="rounded-2xl border border-dourado/25 bg-gradient-to-b from-dourado/[0.07] to-transparent p-4">
+          <h3 className="font-title text-dourado text-sm uppercase tracking-wide flex items-center gap-2">
+            🗺️ Mapa de Gatilhos
+          </h3>
+          <p className="text-cinza/55 text-xs mt-0.5">O que os seus registros revelam:</p>
+
+          {mapa.topGatilhos.length > 0 && (
+            <div className="mt-3">
+              <p className="text-cinza/70 text-xs mb-1.5">Gatilhos mais frequentes</p>
+              <div className="flex flex-wrap gap-1.5">
+                {mapa.topGatilhos.map((g) => (
+                  <span key={g.nome} className="rounded-full bg-terra/15 text-terra text-xs px-2.5 py-1">
+                    {g.nome} · {g.vezes}×
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
+              <div className="font-title text-dourado text-lg">{mapa.intensidadeMedia.toFixed(1)}</div>
+              <div className="text-[10px] text-cinza/55">vontade média</div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
+              <div className="font-title text-dourado text-base leading-tight">{mapa.diaDificil ?? '—'}</div>
+              <div className="text-[10px] text-cinza/55">dia mais difícil</div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
+              <div className="text-lg">{mapa.humorTop ? EMOJI[mapa.humorTop] ?? '🙂' : '—'}</div>
+              <div className="text-[10px] text-cinza/55">humor comum</div>
+            </div>
+          </div>
+
+          <p className="text-cinza/45 text-[11px] mt-3 leading-relaxed">
+            💡 Conhecer os seus padrões é meio caminho para vencê-los. Reforce a vigilância
+            {mapa.diaDificil ? ` nas ${mapa.diaDificil.toLowerCase()}s` : ' nos dias mais difíceis'} e
+            quando sentir os gatilhos acima.
+          </p>
+        </div>
+      )}
 
       {/* histórico */}
       {estado.diario.length > 0 && (
