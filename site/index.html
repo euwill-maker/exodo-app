@@ -182,6 +182,12 @@ body>*:not(.skybg){position:relative;z-index:1}
 .plan-list .b{display:flex;gap:10px;font-size:14px;color:var(--txt2);align-items:flex-start}
 .plan-list .b .ck{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:grid;place-items:center;color:var(--green);background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.35)}
 .plan-list .b .ck svg{width:12px;height:12px}
+.acesso{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;max-width:920px;margin:48px auto 0;align-items:center}
+@media(max-width:820px){.acesso{grid-template-columns:1fr;max-width:470px}}
+.acesso .plan-list .b{font-size:15px;color:var(--txt1)}
+.start-card{border:1px solid rgba(201,162,75,.45);border-radius:24px;background:linear-gradient(180deg,rgba(201,162,75,.12),var(--bg2));padding:34px 30px;text-align:center;box-shadow:0 30px 70px -30px rgba(201,162,75,.45)}
+.start-card .free{font-family:var(--display);font-weight:800;font-size:46px;line-height:1;margin:4px 0 2px}
+.start-card .freesub{color:var(--txt3);font-size:13px;margin-bottom:20px}
 .plan .btn{width:100%;justify-content:center}
 @media(max-width:680px){.plans{grid-template-columns:1fr;max-width:420px}}
 .price-single{max-width:460px;margin:54px auto 0}
@@ -460,52 +466,29 @@ footer{position:relative;border-top:1px solid var(--line2);padding:50px 0 44px;c
 <section class="section" id="preco">
   <div class="wrap">
     <div class="center">
-      <div class="eyebrow reveal"><span class="dot"></span> Planos</div>
-      <h2 class="h-sec reveal d1">Escolha o seu <span class="grad-text">caminho para a liberdade.</span></h2>
-      <p class="lead center reveal d2">7 dias grátis, com acesso total — <strong>sem cartão de crédito</strong>. Só escolhe um plano se decidir continuar.</p>
+      <div class="eyebrow reveal"><span class="dot"></span> O que você recebe</div>
+      <h2 class="h-sec reveal d1">Acesso total à sua <span class="grad-text">travessia.</span></h2>
+      <p class="lead center reveal d2">Tudo que você precisa pra vencer, num só lugar — e você começa <strong>de graça, sem cartão</strong>.</p>
     </div>
-    <div class="plans">
-      <div class="plan reveal d1">
-        <h3>Mensal</h3>
-        <div class="pp">Flexível, pra começar sem peso</div>
-        <div class="price">R$ 9,90 <span>/mês</span></div>
-        <div class="pp" style="margin-top:-8px;margin-bottom:18px">menos de R$ 0,33/dia · cancele quando quiser</div>
-        <div class="plan-list">
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Acesso completo a todo o app</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Modo Batalha, devocionais e hábitos</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Batalhas ilimitadas e conquistas</div>
-        </div>
-        <button class="btn btn-ghost" data-cta>Começar 7 dias grátis</button>
+    <div class="acesso">
+      <div class="plan-list reveal d1" style="margin-bottom:0">
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Contador & Jornada</b> — do Egito à Terra Prometida</div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Modo Batalha</b> — 3 defesas pra hora da tentação</div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Devocional diário</b> — 1 ano de leituras</div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Hábitos saudáveis</b> e sequências diárias</div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Diário</b> com Mapa de Gatilhos</div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Conquistas, XP e patentes</b></div>
+        <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <b>Tudo salvo na sua conta</b>, em qualquer aparelho</div>
       </div>
-      <div class="plan reveal d2">
-        <div class="plan-ribbon" style="background:linear-gradient(180deg,#E6C879,#C9A24B)">💚 Economize ~16%</div>
-        <h3>Trimestral</h3>
-        <div class="pp">O equilíbrio entre preço e compromisso</div>
-        <div class="price">R$ 24,90 <span>/3 meses</span></div>
-        <div class="pp" style="margin-top:-8px;margin-bottom:18px">≈ R$ 8,30/mês · renova sozinho</div>
-        <div class="plan-list">
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Tudo do plano mensal</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Mais barato que pagar mês a mês</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Tempo pro hábito realmente pegar</div>
-        </div>
-        <button class="btn btn-ghost" data-cta>Assinar trimestral</button>
-      </div>
-      <div class="plan pro reveal d3">
-        <div class="plan-ribbon">⭐ Melhor valor</div>
-        <h3>Vitalício</h3>
-        <div class="pp">Pague uma vez, use para sempre</div>
-        <div class="price">R$ 97 <span>uma vez</span></div>
-        <div class="pp" style="margin-top:-8px;margin-bottom:18px">acesso para sempre · sem mensalidade</div>
-        <div class="plan-list">
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> <strong>Tudo do app, para sempre</strong></div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Nunca mais paga mensalidade</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Todas as novidades futuras inclusas</div>
-          <div class="b"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span> Em ~10 meses já se paga sozinho</div>
-        </div>
-        <button class="btn btn-primary pulse" data-cta>Garantir acesso vitalício →</button>
+      <div class="start-card reveal d2">
+        <div class="plan-ribbon" style="position:static;transform:none;display:inline-block;margin-bottom:14px">✨ 7 dias grátis</div>
+        <div class="free">Grátis</div>
+        <div class="freesub">por 7 dias · acesso total</div>
+        <button class="btn btn-primary pulse" data-cta style="width:100%">Começar grátis →</button>
+        <p style="color:var(--txt3);font-size:12.5px;margin-top:14px">🔒 Não precisa cadastrar cartão pra se conectar.</p>
+        <p style="color:var(--txt2);font-size:13px;margin-top:12px;line-height:1.5">Depois, a partir de <strong>R$ 9,90/mês</strong>. Você escolhe o plano — mensal, trimestral ou vitalício — <strong>dentro do app</strong>, quando quiser.</p>
       </div>
     </div>
-    <p class="center reveal" style="color:var(--txt2);font-size:14px;margin-top:26px">🛡️ <strong>Risco zero:</strong> teste 7 dias de graça. Se não for pra você, é só não assinar — não cobramos nada.</p>
   </div>
 </section>
 
@@ -515,7 +498,7 @@ footer{position:relative;border-top:1px solid var(--line2);padding:50px 0 44px;c
     <div class="center"><div class="eyebrow reveal"><span class="dot"></span> Dúvidas</div><h2 class="h-sec reveal d1">Perguntas <span class="grad-text">frequentes.</span></h2></div>
     <div class="faq">
       <details class="qa reveal"><summary>Já tentei de tudo e não consegui. Por que dessa vez seria diferente? <span class="plus">+</span></summary><div class="ans">Porque você não vai depender só da força de vontade. O Êxodo ataca os <strong>três lados ao mesmo tempo</strong>: o espiritual (devocional e oração), o emocional (a Muralha da Tentação na hora da crise) e o comportamental (novos hábitos e acompanhamento diário). Não é mais uma promessa — é um caminho claro, um dia de cada vez, com Deus do seu lado.</div></details>
-      <details class="qa reveal"><summary>Quanto custa o Êxodo? <span class="plus">+</span></summary><div class="ans">Você começa com <strong>7 dias grátis</strong> e acesso total a tudo — <strong>sem cartão de crédito</strong>. Depois você escolhe: <strong>R$ 9,90/mês</strong>, <strong>R$ 24,90 a cada 3 meses</strong> (economia de ~16%) ou <strong>R$ 97 uma única vez</strong> para acesso vitalício, sem nunca mais pagar.</div></details>
+      <details class="qa reveal"><summary>Quanto custa o Êxodo? <span class="plus">+</span></summary><div class="ans">Você começa <strong>grátis por 7 dias</strong>, com acesso total e <strong>sem cadastrar cartão</strong>. Depois, <strong>dentro do app</strong>, escolhe o plano que preferir: mensal (R$ 9,90), trimestral (R$ 24,90, economia de ~16%) ou vitalício (R$ 97 uma vez, sem nunca mais pagar).</div></details>
       <details class="qa reveal"><summary>Não tenho muito tempo. Dá pra usar mesmo assim? <span class="plus">+</span></summary><div class="ans">Dá. Bastam <strong>poucos minutos por dia</strong>: um devocional curto, marcar seus hábitos e abrir a Muralha só quando a tentação aperta. É feito pra caber na rotina, não pra tomar seu tempo.</div></details>
       <details class="qa reveal"><summary>Tenho vergonha. Alguém vai ver isso no meu celular? <span class="plus">+</span></summary><div class="ans">Ninguém. É só seu. O ícone é discreto e o conteúdo da sua jornada — recaídas, diário, gatilhos — fica protegido na sua conta. É um lugar seguro pra ser sincero com você e com Deus, sem julgamento.</div></details>
       <details class="qa reveal"><summary>Preciso ser muito religioso pra usar? <span class="plus">+</span></summary><div class="ans">Não. Se você acredita em Deus e quer vencer com fé, o Êxodo é pra você — esteja no começo da caminhada ou já firme nela. A linguagem é simples e acolhedora, sem cobrança.</div></details>
