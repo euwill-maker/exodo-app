@@ -39,9 +39,11 @@ export function Auth() {
       <div className="text-center mb-6">
         <div className="relative mx-auto mb-5 flex h-24 w-24 items-center justify-center">
           <div className="absolute inset-0 rounded-full bg-dourado/20 blur-2xl animate-floatGlow" />
-          <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl border border-dourado/40 bg-white/5">
-            <span className="font-title text-5xl font-extrabold text-dourado text-glow">Ê</span>
-          </div>
+          <img
+            src="/icons/icon.svg"
+            alt="Êxodo"
+            className="relative h-24 w-24 rounded-3xl shadow-glow-sm"
+          />
         </div>
         <h1 className="font-title text-4xl text-dourado text-glow">Êxodo</h1>
         <p className="mt-2 text-cinza/80">Da escravidão para a liberdade.</p>
@@ -141,7 +143,7 @@ export function Auth() {
       <p className="mt-5 text-center text-cinza/40 text-xs">
         Ao continuar, você concorda com os{' '}
         <a
-          href="https://euwill-maker.github.io/exodo-site/termos.html"
+          href="https://exodo.app.br/site/termos.html"
           target="_blank"
           rel="noopener"
           className="underline"
@@ -150,7 +152,7 @@ export function Auth() {
         </a>{' '}
         e a{' '}
         <a
-          href="https://euwill-maker.github.io/exodo-site/privacidade.html"
+          href="https://exodo.app.br/site/privacidade.html"
           target="_blank"
           rel="noopener"
           className="underline"

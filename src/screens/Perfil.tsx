@@ -1,11 +1,40 @@
+import { useEffect, useState } from 'react'
 import { useApp } from '../state/AppContext'
 import { diasLivres } from '../lib/streak'
 import { infoPatente } from '../lib/patente'
 import { diasRestantesData } from '../lib/acesso'
+import {
+  ativarLembretes,
+  desativarLembretes,
+  estadoLembrete,
+  type EstadoLembrete,
+} from '../lib/push'
 import { Icon } from '../components/Icon'
 
-export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void }) {
-  const { estado, resetar, mostrarTutorial, signOut, plano, trialEnds } = useApp()
+export function Perfil({
+  onAbrirAssinatura,
+  onAbrirAdmin,
+}: {
+  onAbrirAssinatura: () => void
+  onAbrirAdmin: () => void
+}) {
+  const { estado, resetar, mostrarTutorial, signOut, plano, trialEnds, userId, isAdmin } = useApp()
+
+  const [lembrete, setLembrete] = useState<EstadoLembrete>('inativo')
+  useEffect(() => {
+    estadoLembrete().then(setLembrete)
+  }, [])
+
+  const alternarLembrete = async () => {
+    if (!userId) return
+    if (lembrete === 'ativo') {
+      await desativarLembretes(userId)
+      setLembrete('inativo')
+    } else {
+      const r = await ativarLembretes(userId)
+      setLembrete(r.ok ? 'ativo' : await estadoLembrete())
+    }
+  }
   const restamTrial = diasRestantesData(trialEnds)
 
   const totalDias = estado.batalhas.reduce((s, b) => s + diasLivres(b.dataInicio), 0)
@@ -63,7 +92,9 @@ export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void })
               ? 'Acesso Vitalício ✓'
               : plano === 'mensal'
                 ? 'Plano Mensal ativo'
-                : restamTrial > 0
+                : plano === 'trimestral'
+                  ? 'Plano Trimestral ativo'
+                  : restamTrial > 0
                   ? `🎁 ${restamTrial} ${restamTrial === 1 ? 'dia' : 'dias'} grátis restantes`
                   : 'Período grátis encerrado'}
           </div>
@@ -89,6 +120,38 @@ export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void })
         </div>
       </div>
 
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center justify-between">
+        <div>
+          <p className="font-title text-cinza">Lembrete diário</p>
+          <p className="text-cinza/55 text-xs mt-0.5">
+            {lembrete === 'ativo'
+              ? 'Você recebe um lembrete às 7h'
+              : lembrete === 'bloqueado'
+                ? 'Bloqueado no navegador'
+                : lembrete === 'instalar-ios'
+                  ? 'Instale o app na tela inicial'
+                  : lembrete === 'sem-suporte'
+                    ? 'Não disponível neste aparelho'
+                    : 'Receba um empurrãozinho todo dia'}
+          </p>
+        </div>
+        {(lembrete === 'ativo' || lembrete === 'inativo') && (
+          <button
+            onClick={alternarLembrete}
+            className={`h-7 w-12 rounded-full transition relative ${
+              lembrete === 'ativo' ? 'bg-dourado' : 'bg-white/15'
+            }`}
+            aria-label="Alternar lembrete diário"
+          >
+            <span
+              className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-all ${
+                lembrete === 'ativo' ? 'left-[22px]' : 'left-0.5'
+              }`}
+            />
+          </button>
+        )}
+      </div>
+
       <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
         <p className="font-scripture text-xl italic text-white/90">
           “Permanecei firmes na liberdade com que Cristo nos libertou.”
@@ -96,9 +159,18 @@ export function Perfil({ onAbrirAssinatura }: { onAbrirAssinatura: () => void })
         <p className="text-dourado text-sm mt-2">— Gálatas 5:1</p>
       </div>
 
+      {isAdmin && (
+        <button
+          onClick={onAbrirAdmin}
+          className="mt-10 w-full rounded-xl border border-dourado/40 bg-dourado/10 py-3 text-dourado text-sm font-title font-semibold"
+        >
+          📊 Painel Admin
+        </button>
+      )}
+
       <button
         onClick={mostrarTutorial}
-        className="mt-10 w-full rounded-xl border border-white/15 py-3 text-cinza/80 text-sm"
+        className={`${isAdmin ? 'mt-3' : 'mt-10'} w-full rounded-xl border border-white/15 py-3 text-cinza/80 text-sm`}
       >
         Rever tutorial
       </button>

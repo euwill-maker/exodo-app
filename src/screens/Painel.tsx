@@ -3,6 +3,7 @@ import { diasLivres } from '../lib/streak'
 import { faseAtual } from '../lib/journey'
 import { infoPatente } from '../lib/patente'
 import { Icon, type IconName } from '../components/Icon'
+import { CartaoLembrete } from '../components/CartaoLembrete'
 
 export function Painel({
   onAbrir,
@@ -24,6 +25,8 @@ export function Painel({
       </div>
       <h1 className="font-title text-3xl text-dourado text-glow mt-2">Suas batalhas</h1>
       <p className="text-cinza/60 text-sm mt-1">Cada vício é uma travessia rumo à liberdade.</p>
+
+      <CartaoLembrete />
 
       {estado.batalhas.length === 0 ? (
         <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-center">

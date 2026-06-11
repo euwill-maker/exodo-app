@@ -39,6 +39,8 @@ interface Ctx {
   authLoading: boolean
   plano: Plano
   trialEnds: string | null
+  perfilCarregado: boolean
+  isAdmin: boolean
   recarregarPerfil: () => Promise<void>
   signUp: (email: string, senha: string, nome: string) => Promise<{ erro?: string }>
   signIn: (email: string, senha: string) => Promise<{ erro?: string }>
@@ -76,6 +78,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [authLoading, setAuthLoading] = useState(true)
   const [plano, setPlano] = useState<Plano>('trial')
   const [trialEnds, setTrialEnds] = useState<string | null>(null)
+  const [perfilCarregado, setPerfilCarregado] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [recuperandoSenha, setRecuperandoSenha] = useState(false)
   const nuvemCarregadaPara = useRef<string | null>(null)
 
@@ -85,12 +89,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (p) {
       setPlano((p.plano as Plano) ?? 'trial')
       setTrialEnds(p.trial_ends)
+      setIsAdmin(!!p.is_admin)
     }
   }
 
   useEffect(() => {
     salvarEstado(estado)
   }, [estado])
+
+  // contador de visitas (anônimo, 1x por sessão do navegador)
+  useEffect(() => {
+    if (sessionStorage.getItem('exodo:visita')) return
+    sessionStorage.setItem('exodo:visita', '1')
+    void supabase.rpc('registrar_visita')
+  }, [])
 
   // sessão do Supabase
   useEffect(() => {
@@ -114,6 +126,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!userId || nuvemCarregadaPara.current === userId) return
     nuvemCarregadaPara.current = userId
+    setPerfilCarregado(false)
     ;(async () => {
       const nuvem = await carregarNuvem(userId)
       if (nuvem && nuvem.nome) {
@@ -125,7 +138,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (perfil) {
         setPlano((perfil.plano as Plano) ?? 'trial')
         setTrialEnds(perfil.trial_ends)
+        setIsAdmin(!!perfil.is_admin)
       }
+      setPerfilCarregado(true)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
@@ -200,7 +215,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
   const resetarSenha = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: 'https://euwill-maker.github.io/exodo-app/',
+      redirectTo: 'https://exodo.app.br/',
     })
     if (error) return { erro: traduzErro(error.message) }
     return {}
@@ -344,6 +359,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         authLoading,
         plano,
         trialEnds,
+        perfilCarregado,
+        isAdmin,
         recarregarPerfil,
         signUp,
         signIn,

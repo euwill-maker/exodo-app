@@ -35,7 +35,13 @@ Deno.serve(async (req) => {
       const s = event.data.object as Stripe.Checkout.Session
       const userId = s.client_reference_id
       if (userId) {
-        const plano = s.mode === 'subscription' ? 'mensal' : 'vitalicio'
+        let plano = 'vitalicio'
+        if (s.mode === 'subscription' && s.subscription) {
+          // assinatura: distingue mensal (1 mês) de trimestral (3 meses) pelo intervalo
+          const sub = await stripe.subscriptions.retrieve(s.subscription as string)
+          const rec = sub.items.data[0]?.price?.recurring
+          plano = rec?.interval === 'month' && (rec?.interval_count ?? 1) >= 3 ? 'trimestral' : 'mensal'
+        }
         await supabase
           .from('profiles')
           .update({

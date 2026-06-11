@@ -1,46 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
-    <clipPath id="rounded"><rect width="512" height="512" rx="112"/></clipPath>
+    <clipPath id="r"><rect width="512" height="512" rx="112"/></clipPath>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2c2014"/>
-      <stop offset="1" stop-color="#160e07"/>
+      <stop offset="0" stop-color="#2c2014"/><stop offset="1" stop-color="#120b05"/>
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="46%" r="50%">
-      <stop offset="0" stop-color="#C9A24B" stop-opacity="0.55"/>
-      <stop offset="60%" stop-color="#C9A24B" stop-opacity="0.12"/>
+    <radialGradient id="glow" cx="50%" cy="48%" r="50%">
+      <stop offset="0" stop-color="#E6C879" stop-opacity="0.34"/>
+      <stop offset="60%" stop-color="#C9A24B" stop-opacity="0.08"/>
       <stop offset="100%" stop-color="#C9A24B" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#F0D77B"/>
-      <stop offset="1" stop-color="#C9A24B"/>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBEAA6"/>
+      <stop offset="0.5" stop-color="#E6C879"/>
+      <stop offset="1" stop-color="#C29A41"/>
     </linearGradient>
   </defs>
-
-  <g clip-path="url(#rounded)">
+  <g clip-path="url(#r)">
     <rect width="512" height="512" fill="url(#bg)"/>
-    <!-- brilho do amanhecer -->
     <rect width="512" height="512" fill="url(#glow)"/>
-
-    <!-- raios -->
-    <g stroke="#D8B559" stroke-width="9" stroke-linecap="round" opacity="0.85">
-      <line x1="256" y1="92" x2="256" y2="132"/>
-      <line x1="170" y1="120" x2="192" y2="150"/>
-      <line x1="342" y1="120" x2="320" y2="150"/>
-      <line x1="120" y1="186" x2="152" y2="204"/>
-      <line x1="392" y1="186" x2="360" y2="204"/>
+    <g fill="url(#gold)">
+      <rect x="183" y="182" width="37" height="190" rx="9"/>
+      <rect x="183" y="182" width="146" height="37" rx="9"/>
+      <rect x="183" y="267" width="116" height="35" rx="9"/>
+      <rect x="183" y="335" width="146" height="37" rx="9"/>
+      <path d="M256 130 L305 174 L286 174 L256 147 L226 174 L207 174 Z"/>
     </g>
-
-    <!-- sol -->
-    <circle cx="256" cy="250" r="62" fill="url(#sun)"/>
-
-    <!-- dunas (sol nascendo atrás) -->
-    <path d="M0 300 C 110 250, 190 320, 300 290 C 380 268, 440 300, 512 282 L512 512 L0 512 Z" fill="#241a10"/>
-    <path d="M0 360 C 120 320, 230 380, 330 350 C 410 327, 470 360, 512 345 L512 512 L0 512 Z" fill="#180f08"/>
-
-    <!-- caminho dourado rumo ao sol -->
-    <path d="M256 470 L292 372 L268 318" fill="none" stroke="#C9A24B" stroke-width="7"
-          stroke-linecap="round" stroke-dasharray="2 16" opacity="0.85"/>
-    <path d="M256 470 L220 372 L244 318" fill="none" stroke="#C9A24B" stroke-width="7"
-          stroke-linecap="round" stroke-dasharray="2 16" opacity="0.55"/>
   </g>
 </svg>

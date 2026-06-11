@@ -9,6 +9,12 @@ body,
   height: 100%;
 }
 
+/* respeita a barra de status / notch do iPhone quando instalado como app (PWA em tela
+   cheia), pra nenhum cabeçalho (voltar, fechar, lixeira) ficar escondido atrás dela */
+#root {
+  padding-top: env(safe-area-inset-top);
+}
+
 body {
   margin: 0;
   color: #ffffff;

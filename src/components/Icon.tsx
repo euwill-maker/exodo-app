@@ -25,6 +25,7 @@ export type IconName =
   | 'user'
   | 'pray'
   | 'sword'
+  | 'swords'
   | 'flame'
   | 'music'
   | 'phone'
@@ -179,6 +180,18 @@ const PATHS: Record<IconName, ReactElement> = {
       <path d="M14.5 9.5 9 4" opacity="0" />
       <path d="M4 20l3-3M6.5 17.5l-2.5-1 1-2.5L18 3.5" />
       <path d="M5 15l4 4" />
+    </>
+  ),
+  swords: (
+    <>
+      <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" />
+      <line x1="13" y1="19" x2="19" y2="13" />
+      <line x1="16" y1="16" x2="20" y2="20" />
+      <line x1="19" y1="21" x2="21" y2="19" />
+      <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" />
+      <line x1="5" y1="14" x2="9" y2="18" />
+      <line x1="7" y1="17" x2="4" y2="20" />
+      <line x1="3" y1="19" x2="5" y2="21" />
     </>
   ),
   flame: (

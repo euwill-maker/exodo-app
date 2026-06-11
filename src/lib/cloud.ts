@@ -15,14 +15,14 @@ export async function carregarNuvem(userId: string): Promise<EstadoApp | null> {
 // Lê o perfil protegido (plano + fim do trial) — definido pelo servidor/webhook.
 export async function carregarPerfil(
   userId: string,
-): Promise<{ plano: string; trial_ends: string | null } | null> {
+): Promise<{ plano: string; trial_ends: string | null; is_admin: boolean } | null> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('plano, trial_ends')
+    .select('plano, trial_ends, is_admin')
     .eq('id', userId)
     .maybeSingle()
   if (error || !data) return null
-  return data as { plano: string; trial_ends: string | null }
+  return data as { plano: string; trial_ends: string | null; is_admin: boolean }
 }
 
 // Salva (upsert) o estado do usuário na nuvem.

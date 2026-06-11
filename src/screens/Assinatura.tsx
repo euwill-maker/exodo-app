@@ -23,7 +23,7 @@ export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => voi
   const { userId, trialEnds, signOut } = useApp()
   const restam = diasRestantesData(trialEnds)
 
-  const assinar = (plano: 'mensal' | 'vitalicio') => abrirCheckout(plano, userId)
+  const assinar = (plano: 'mensal' | 'trimestral' | 'vitalicio') => abrirCheckout(plano, userId)
 
   return (
     <div className="min-h-screen px-5 py-8 max-w-md mx-auto animate-fadeUp">
@@ -71,6 +71,28 @@ export function Assinatura({ onFechar, bloqueio = false }: { onFechar: () => voi
           className="mt-5 w-full rounded-xl bg-gradient-to-b from-dourado-claro to-dourado py-3.5 font-title font-bold text-azul shadow-glow-sm active:scale-[0.98] transition"
         >
           Garantir acesso vitalício →
+        </button>
+      </div>
+
+      {/* Plano Trimestral */}
+      <div className="mt-4 rounded-3xl border border-dourado/25 bg-white/[0.03] p-6">
+        <div className="flex items-center justify-between">
+          <h2 className="font-title text-xl">Trimestral</h2>
+          <span className="rounded-full bg-dourado/15 text-dourado text-[11px] px-2.5 py-1">
+            economize ~16%
+          </span>
+        </div>
+        <p className="text-cinza/60 text-sm">A cada 3 meses · renova sozinho</p>
+        <div className="font-title text-3xl mt-2">
+          R$ 24,90{' '}
+          <span className="text-base text-cinza/60 font-semibold">/trimestre</span>
+        </div>
+        <p className="text-cinza/45 text-xs mt-0.5">≈ R$ 8,30 por mês</p>
+        <button
+          onClick={() => assinar('trimestral')}
+          className="mt-5 w-full rounded-xl border border-dourado/40 bg-dourado/10 py-3.5 font-title font-bold text-dourado active:scale-[0.98] transition"
+        >
+          Assinar trimestral
         </button>
       </div>
 

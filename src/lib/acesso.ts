@@ -1,6 +1,6 @@
 export const DIAS_TRIAL = 7
 
-export type Plano = 'trial' | 'mensal' | 'vitalicio'
+export type Plano = 'trial' | 'mensal' | 'trimestral' | 'vitalicio'
 
 const MS_DIA = 86_400_000
 
@@ -25,7 +25,7 @@ export function acessoLiberado(
   primeiroAcesso: string,
   agora: Date = new Date(),
 ): boolean {
-  if (plano === 'mensal' || plano === 'vitalicio') return true
+  if (plano === 'mensal' || plano === 'trimestral' || plano === 'vitalicio') return true
   return diasRestantesTrial(primeiroAcesso, agora) > 0
 }
 
@@ -35,6 +35,6 @@ export function acessoLiberadoServidor(
   trialEnds: string | null,
   agora: Date = new Date(),
 ): boolean {
-  if (plano === 'mensal' || plano === 'vitalicio') return true
+  if (plano === 'mensal' || plano === 'trimestral' || plano === 'vitalicio') return true
   return diasRestantesData(trialEnds, agora) > 0
 }

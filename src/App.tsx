@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useApp } from './state/AppContext'
+import { useSwipeBack } from './lib/useSwipeBack'
 import { Auth } from './screens/Auth'
 import { RedefinirSenha } from './screens/RedefinirSenha'
 import { Boasvindas } from './screens/Boasvindas'
@@ -10,22 +11,51 @@ import { NovaBatalha } from './screens/NovaBatalha'
 import { BatalhaDetalhe } from './screens/BatalhaDetalhe'
 import { Muralha } from './screens/Muralha'
 import { Habitos } from './screens/Habitos'
-import { Devocional } from './screens/Devocional'
+// carregado sob demanda: contém o plano de 1 ano (~500KB) — não pesa na entrada do app
+const Devocional = lazy(() =>
+  import('./screens/Devocional').then((m) => ({ default: m.Devocional })),
+)
 import { Diario } from './screens/Diario'
 import { Perfil } from './screens/Perfil'
 import { Assinatura } from './screens/Assinatura'
+import { Admin } from './screens/Admin'
 import { BottomNav, type Aba } from './components/BottomNav'
-import { BotaoBatalha } from './components/BotaoBatalha'
 import { Landscape } from './components/Landscape'
 
 export function App() {
-  const { estado, userId, authLoading, recuperandoSenha, plano, trialEnds } = useApp()
+  const { estado, userId, authLoading, recuperandoSenha, plano, trialEnds, perfilCarregado } =
+    useApp()
   const [aba, setAba] = useState<Aba>('inicio')
   const [batalhaAberta, setBatalhaAberta] = useState<string | null>(null)
   const [criando, setCriando] = useState(false)
   const [muralhaAberta, setMuralhaAberta] = useState(false)
   const [muralhaBatalha, setMuralhaBatalha] = useState<string | null>(null)
   const [assinaturaAberta, setAssinaturaAberta] = useState(false)
+  const [adminAberto, setAdminAberto] = useState(false)
+
+  // abre direto no Devocional quando vem da notificação (/?go=devocional)
+  useEffect(() => {
+    const go = new URLSearchParams(window.location.search).get('go')
+    if (go === 'devocional') {
+      setAba('devocional')
+      const url = new URL(window.location.href)
+      url.searchParams.delete('go')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [])
+
+  // voltar unificado: fecha a camada aberta mais "de cima" (mesma ordem da pilha de telas)
+  const voltar = useCallback(() => {
+    if (muralhaAberta) return setMuralhaAberta(false)
+    if (assinaturaAberta) return setAssinaturaAberta(false)
+    if (adminAberto) return setAdminAberto(false)
+    if (criando) return setCriando(false)
+    if (batalhaAberta) return setBatalhaAberta(null)
+    if (aba !== 'inicio') return setAba('inicio')
+  }, [muralhaAberta, assinaturaAberta, adminAberto, criando, batalhaAberta, aba])
+
+  // arrastar da borda esquerda pra direita = voltar
+  useSwipeBack(voltar)
 
   const abrirMuralha = (id: string | null) => {
     setMuralhaBatalha(id)
@@ -61,8 +91,9 @@ export function App() {
       </>
     )
 
-  // trava do trial: trial expirado e sem assinatura → tela de planos (paywall)
-  if (trialEnds && !acessoLiberadoServidor(plano, trialEnds))
+  // trava do trial: perfil do servidor carregado e sem acesso → tela de planos (paywall).
+  // Usa perfilCarregado (não "trialEnds existe") pra um trial_ends nulo NÃO virar acesso grátis.
+  if (perfilCarregado && !acessoLiberadoServidor(plano, trialEnds))
     return (
       <>
         <Landscape />
@@ -113,6 +144,9 @@ export function App() {
       </>
     )
 
+  // painel de admin (tela cheia)
+  if (adminAberto) return <Admin onVoltar={() => setAdminAberto(false)} />
+
   // modo batalha (tela cheia)
   if (muralhaAberta)
     return (
@@ -143,12 +177,30 @@ export function App() {
           <Painel onAbrir={(id) => setBatalhaAberta(id)} onNova={() => setCriando(true)} />
         )}
         {aba === 'habitos' && <Habitos />}
-        {aba === 'devocional' && <Devocional />}
+        {aba === 'devocional' && (
+          <Suspense
+            fallback={
+              <div className="px-5 pt-10 text-center text-cinza/60 animate-fadeUp">
+                Carregando devocional…
+              </div>
+            }
+          >
+            <Devocional />
+          </Suspense>
+        )}
         {aba === 'diario' && <Diario />}
-        {aba === 'perfil' && <Perfil onAbrirAssinatura={() => setAssinaturaAberta(true)} />}
+        {aba === 'perfil' && (
+          <Perfil
+            onAbrirAssinatura={() => setAssinaturaAberta(true)}
+            onAbrirAdmin={() => setAdminAberto(true)}
+          />
+        )}
       </div>
-      {estado.batalhas.length > 0 && <BotaoBatalha comNav onClick={() => abrirMuralha(null)} />}
-      <BottomNav ativa={aba} onMudar={setAba} />
+      <BottomNav
+        ativa={aba}
+        onMudar={setAba}
+        onSOS={estado.batalhas.length > 0 ? () => abrirMuralha(null) : undefined}
+      />
     </div>
   )
 }
